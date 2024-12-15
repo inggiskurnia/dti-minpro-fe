@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getEventById, GetEventResponseDTO } from "@/api/getEvents";
 import getTickets from "@/api/getTickets";
-import { getVouchers } from "@/api/getVouchers";
+import { getVouchersByEventId } from "@/api/getVouchers";
 import { TicketResponse } from "@/types/ticket";
 import { VoucherResponse } from "@/types/voucher";
 import Navbar from "@/components/Navbar";
@@ -62,7 +62,7 @@ const EventPage: React.FC = () => {
     isLoading: vouchersLoading,
   } = useQuery<VoucherResponse, Error>({
     queryKey: ["vouchers", eventId],
-    queryFn: () => getVouchers(Number(eventId)),
+    queryFn: () => getVouchersByEventId(Number(eventId)),
     enabled: !!eventId,
   });
 

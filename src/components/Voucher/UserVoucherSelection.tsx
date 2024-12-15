@@ -4,12 +4,12 @@ import React from "react";
 import { getUserVouchers } from "@/api/getUserVoucher";
 import { useUserVoucher } from "@/context/UserVoucherContext";
 import { useUser } from "@/context/UserContext";
-import { UserVoucher } from "@/types/voucher";
+import { UserVoucher, Voucher } from "@/types/voucher";
 import { useQuery } from "@tanstack/react-query";
 
-const UserVoucherSelector: React.FC = () => {
+const UserVoucherSelection: React.FC = () => {
   const { userId } = useUser();
-  const { selectedVoucher, setSelectedVoucher } = useUserVoucher();
+  const { selectedUserVoucher, setSelectedUserVoucher } = useUserVoucher();
 
   const {
     data: userVoucherResponse,
@@ -33,15 +33,13 @@ const UserVoucherSelector: React.FC = () => {
 
   return (
     <div className="mb-4">
-      <h2 className="text-xl font-bold text-gray-700 mb-2">
-        Available Vouchers
-      </h2>
+      <h2 className="font-bold text-gray-700 mb-2">Available Vouchers</h2>
       <ul className="list-disc ml-5">
         {userVoucherResponse.map((userVoucher) => (
           <li key={userVoucher.voucherId} className="mb-2">
             <button
-              onClick={() => setSelectedVoucher(userVoucher)}
-              className={`py-2 px-4 rounded ${selectedVoucher?.voucherId === userVoucher.voucherId ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"}`}
+              onClick={() => setSelectedUserVoucher(userVoucher)}
+              className={`py-1 px-4 rounded ${selectedUserVoucher?.voucherId === userVoucher.voucherId ? "bg-gray-500 text-white" : "bg-gray-200 text-gray-700"}`}
             >
               {userVoucher.voucherName} - Code: {userVoucher.voucherCode}
             </button>
@@ -53,4 +51,4 @@ const UserVoucherSelector: React.FC = () => {
   );
 };
 
-export default UserVoucherSelector;
+export default UserVoucherSelection;

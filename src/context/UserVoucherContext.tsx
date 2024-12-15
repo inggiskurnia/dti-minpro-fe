@@ -4,8 +4,10 @@ import { UserVoucher, Voucher } from "@/types/voucher";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface UserVoucherContextType {
-  selectedVoucher: UserVoucher | null;
-  setSelectedVoucher: React.Dispatch<React.SetStateAction<UserVoucher | null>>;
+  selectedUserVoucher: UserVoucher | null;
+  setSelectedUserVoucher: React.Dispatch<
+    React.SetStateAction<UserVoucher | null>
+  >;
 }
 
 const UserVoucherContext = createContext<UserVoucherContextType | undefined>(
@@ -19,13 +21,14 @@ interface UserVoucherProviderProps {
 export const UserVoucherProvider: React.FC<UserVoucherProviderProps> = ({
   children,
 }) => {
-  const [selectedVoucher, setSelectedVoucher] = useState<UserVoucher | null>(
-    null
-  );
-
+  const [selectedUserVoucher, setSelectedUserVoucher] =
+    useState<UserVoucher | null>(null);
   return (
     <UserVoucherContext.Provider
-      value={{ selectedVoucher, setSelectedVoucher }}
+      value={{
+        selectedUserVoucher: selectedUserVoucher,
+        setSelectedUserVoucher: setSelectedUserVoucher,
+      }}
     >
       {children}
     </UserVoucherContext.Provider>
@@ -35,7 +38,7 @@ export const UserVoucherProvider: React.FC<UserVoucherProviderProps> = ({
 export const useUserVoucher = () => {
   const context = useContext(UserVoucherContext);
   if (!context) {
-    throw new Error("useVoucher must be used within a VoucherProvider");
+    throw new Error("useUserVoucher must be used within a UserVoucherProvider");
   }
   return context;
 };
