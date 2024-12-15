@@ -33,7 +33,7 @@ const EventPage: React.FC = () => {
   useEffect(() => {
     setIsClient(true);
     setEventId(Number(eventId));
-    setUserId(9); // change this to user session (dont forget)
+    setUserId(9); // change this to user session (don't forget)
   }, [eventId, setEventId]);
 
   const {
@@ -85,14 +85,13 @@ const EventPage: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto p-6 pt-28 pb-16 flex gap-10 w-[70%]">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-[60%]">
+      <div className="container mx-auto p-6 pt-28 pb-16 flex flex-col lg:flex-row gap-10 w-full lg:w-[70%]">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-full lg:w-[60%]">
           <div className="relative pb-10">
             <img
               src={event.thumbnail}
               alt={event.name}
-              className="w-full h-auto"
-              style={{ maxWidth: "1280px", maxHeight: "600px" }}
+              className="w-full h-auto max-w-[1280px] max-h-[600px]"
             />
           </div>
 
@@ -103,23 +102,19 @@ const EventPage: React.FC = () => {
             >
               Description
             </button>
-            {ticketsResponse?.data.length > 0 ? (
+            {ticketsResponse?.data.length > 0 && (
               <button
                 className={`py-2 px-4 font-semibold ${activeTab === "ticket" ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600"}`}
                 onClick={() => setActiveTab("ticket")}
               >
                 Ticket
               </button>
-            ) : (
-              <></>
             )}
           </div>
 
           <div className="p-4 text-gray-700">
             {activeTab === "desc" && (
-              <DescriptionFormating
-                description={event.description}
-              ></DescriptionFormating>
+              <DescriptionFormating description={event.description} />
             )}
             {activeTab === "ticket" &&
               isClient &&
@@ -131,7 +126,7 @@ const EventPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="space-y-10 w-[30%]">
+        <div className="space-y-10 w-full lg:w-[30%]">
           <div className="bg-white shadow-lg rounded-lg p-6">
             <h1 className="text-xl font-bold text-gray-800 mb-2 pb-2">
               {event.name}

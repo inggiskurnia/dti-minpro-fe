@@ -20,26 +20,12 @@ const Navbar: FC = () => {
   const [eventId, setEventId] = useState<number | undefined>(undefined);
 
   const navbarData: MenuData[] = [
-    {
-      title: "Profile",
-      link: "/profile",
-    },
-    {
-      title: "Tickets",
-      link: `/user/${userId}/tickets`,
-    },
-    {
-      title: "Transactions",
-      link: `/user/${userId}/transactions`,
-    },
-    {
-      title: "Voucher",
-      link: `/user/${userId}/vouchers`,
-    },
-    {
-      title: "Points",
-      link: "/points",
-    },
+    // { title: "Profile", link: "/profile" },
+    { title: "Tickets", link: `/user/${userId}/tickets` },
+    { title: "Transactions", link: `/user/${userId}/transactions` },
+    { title: "Voucher", link: `/user/${userId}/vouchers` },
+    { title: "Create New Event", link: `/event/create` },
+    // { title: "Points", link: "/points" },
   ];
 
   const toggleSubMenu = () => {
@@ -51,27 +37,22 @@ const Navbar: FC = () => {
   };
 
   return (
-    <header
-      className={
-        "fixed z-50 flex w-full items-center justify-between bg-eventureMainBg px-8 py-4 transition-transform duration-300 md:px-56 md:py-2"
-      }
-    >
-      <div className="flex gap-8">
+    <header className="fixed z-50 flex w-full items-center justify-between bg-eventureMainBg px-8 py-4 transition-transform duration-300 md:px-56 md:py-2">
+      <div className="flex gap-8 items-center justify-end">
         <Link href="/">
           <div className="text-3xl">Eventure</div>
         </Link>
-
-        <SearchEvent eventId={eventId} setEventId={setEventId}></SearchEvent>
+        <SearchEvent eventId={eventId} setEventId={setEventId} />
       </div>
 
-      <div className="">
+      <div className="pl-2">
         <div
           className="relative hidden w-full justify-center px-10 md:flex md:w-64"
-          onMouseEnter={() => toggleSubMenu()}
-          onMouseLeave={() => toggleSubMenu()}
+          onMouseEnter={toggleSubMenu}
+          onMouseLeave={toggleSubMenu}
         >
           <button className="py-2">
-            <FaUserCircle size={32}></FaUserCircle>
+            <FaUserCircle size={32} />
           </button>
           {isSubmenuOpen && (
             <div className="absolute top-12 z-10 flex h-72 w-full items-center rounded bg-white shadow-lg">
@@ -94,16 +75,23 @@ const Navbar: FC = () => {
           {isMobileMenuOpen ? <FiX size={30} /> : <FiMenu size={30} />}
         </button>
       </div>
+
       <div
-        className={`absolute left-0 top-16 flex w-full flex-col gap-5 bg-white py-8 text-eventureMainBg shadow-lg transition-all duration-500 ease-in-out md:hidden ${
-          isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        className={`absolute left-0 top-16 w-full bg-white py-8 text-eventureMainBg shadow-lg transition-all duration-500 ease-in-out md:hidden ${
+          isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
-        {navbarData.map((submenu, index) => (
-          <Link href={submenu.link} key={index}>
-            <button className="px-8 text-left text-lg">{submenu.title}</button>
-          </Link>
-        ))}
+        {isMobileMenuOpen && (
+          <div className="flex flex-col gap-5">
+            {navbarData.map((submenu, index) => (
+              <Link href={submenu.link} key={index}>
+                <button className="px-8 text-left text-lg">
+                  {submenu.title}
+                </button>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </header>
   );

@@ -14,7 +14,7 @@ const UserTickets: FC = () => {
         <p className="text-gray-500 text-center">
           Claimed ticket by user that can be used in transaction
         </p>
-        <div className="flex justify-center">
+        <div className="flex justify-center pt-5">
           <UserTicketList />
         </div>
       </div>

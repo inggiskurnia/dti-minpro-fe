@@ -59,10 +59,6 @@ const EventCard: FC<EventCardProps> = ({
             />
             <div className="flex flex-col">
               <p className="text-sm font-medium text-gray-700">{organizer}</p>
-              <div className="flex items-center space-x-1 text-gray-500">
-                <FaUserCircle className="text-gray-600" />
-                <span className="text-xs">Organizer</span>
-              </div>
             </div>
           </div>
         </div>

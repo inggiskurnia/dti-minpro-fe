@@ -3,7 +3,6 @@
 import { postFeedback } from "@/api/postFeedback";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { useEvent } from "@/context/EventContext";
 import { useEventTicket } from "@/context/EventTicketContext";
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
@@ -25,22 +24,22 @@ const EventFeedback = () => {
       eventTicketId: Number(eventTicketId),
       feedback: feedback,
     });
-    if (status == 200) {
-      const confirmed = window.confirm("Write feedback successfull !");
+    if (status === 200) {
+      const confirmed = window.confirm("Write feedback successful!");
       if (confirmed) {
         router.push(`/user/${userId}/tickets`);
       }
     } else {
-      window.confirm("Write feedback failed !");
+      window.confirm("Write feedback failed!");
     }
   };
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar></Navbar>
-      <div className="flex-grow flex justify-center pt-24 pb-20">
-        <div className="bg-white p-6 rounded-lg shadow-xl w-1/3 mx-auto">
-          <h2 className="text-2xl font-bold mb-4 text-gray-700">
+      <Navbar />
+      <div className="flex-grow flex justify-center pt-24 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
+          <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">
             Event Feedback
           </h2>
 
@@ -55,7 +54,7 @@ const EventFeedback = () => {
           <div className="mt-4 flex justify-end">
             <button
               onClick={handleOnClick}
-              className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 focus:outline-none"
+              className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 focus:outline-none disabled:opacity-50"
               disabled={!feedback}
             >
               Submit Feedback
@@ -63,8 +62,7 @@ const EventFeedback = () => {
           </div>
         </div>
       </div>
-
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 };

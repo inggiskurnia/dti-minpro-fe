@@ -75,13 +75,14 @@ const CreateEvent = () => {
         totalCapacity: values.totalCapacity,
         totalAvailable: values.totalAvailable,
       };
-      console.log(eventData);
+
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/event`,
         eventData
       );
 
       if (response.status === 200) {
+        window.confirm("Create new event successful !");
         setSubmissionSuccess(true);
       }
     } catch (error) {
@@ -93,7 +94,7 @@ const CreateEvent = () => {
     <>
       <Navbar />
       <div className="min-h-screen bg-gray-50 flex items-center justify-center pt-24 pb-12 sm:px-6 lg:px-8">
-        <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-10">
+        <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-6 sm:p-10">
           <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-6">
             Create New Event
           </h2>
@@ -112,7 +113,7 @@ const CreateEvent = () => {
                   <Field
                     name="name"
                     type="text"
-                    className="input-field w-96 text-gray-700 h-8 border-2 border-gray-200 rounded-md p-2"
+                    className="input-field w-full sm:w-96 text-gray-700 h-8 border-2 border-gray-200 rounded-md p-2"
                     placeholder="Event name"
                   />
                   <ErrorMessage
@@ -130,7 +131,7 @@ const CreateEvent = () => {
                     name="description"
                     as="textarea"
                     rows={4}
-                    className="input-field w-96 h-30 text-gray-700 border-2 border-gray-200 rounded-md p-2"
+                    className="input-field w-full sm:w-96 h-30 text-gray-700 border-2 border-gray-200 rounded-md p-2"
                     placeholder="Event description"
                   />
                   <ErrorMessage
@@ -147,7 +148,7 @@ const CreateEvent = () => {
                   <Field
                     name="thumbnail"
                     type="text"
-                    className="input-field w-96 text-gray-700 h-8 border-2 border-gray-200 rounded-md p-2"
+                    className="input-field w-full sm:w-96 text-gray-700 h-8 border-2 border-gray-200 rounded-md p-2"
                     placeholder="https://example.com/image.jpg"
                   />
                   <ErrorMessage
@@ -175,7 +176,7 @@ const CreateEvent = () => {
                     name="locationDetail"
                     as="textarea"
                     rows={2}
-                    className="input-field w-96 text-gray-700 h-20 border-2 border-gray-200 rounded-md p-2"
+                    className="input-field w-full sm:w-96 text-gray-700 h-20 border-2 border-gray-200 rounded-md p-2"
                     placeholder="Detailed address of the event"
                   />
                   <ErrorMessage
@@ -193,7 +194,7 @@ const CreateEvent = () => {
                     <Field
                       name="startedAt"
                       type="datetime-local"
-                      className="input-field border-2 text-gray-700 border-gray-200 rounded-md"
+                      className="input-field w-full text-gray-700 border-2 border-gray-200 rounded-md p-2"
                     />
                     <ErrorMessage
                       name="startedAt"
@@ -208,7 +209,7 @@ const CreateEvent = () => {
                     <Field
                       name="endedAt"
                       type="datetime-local"
-                      className="input-field border-2 text-gray-700 border-gray-200 rounded-md"
+                      className="input-field w-full text-gray-700 border-2 border-gray-200 rounded-md p-2"
                     />
                     <ErrorMessage
                       name="endedAt"
@@ -225,7 +226,7 @@ const CreateEvent = () => {
                   <Field
                     name="startingPrice"
                     type="number"
-                    className="input-field w-96 text-gray-700 h-8 border-2 border-gray-200 rounded-md p-2"
+                    className="input-field w-full sm:w-96 text-gray-700 h-8 border-2 border-gray-200 rounded-md p-2"
                   />
                   <ErrorMessage
                     name="startingPrice"
@@ -242,7 +243,7 @@ const CreateEvent = () => {
                     <Field
                       name="totalCapacity"
                       type="number"
-                      className="input-field w-96 text-gray-700 h-8 border-2 border-gray-200 rounded-md p-2"
+                      className="input-field w-full sm:w-96 text-gray-700 h-8 border-2 border-gray-200 rounded-md p-2"
                     />
                     <ErrorMessage
                       name="totalCapacity"
@@ -257,7 +258,7 @@ const CreateEvent = () => {
                     <Field
                       name="totalAvailable"
                       type="number"
-                      className="input-field w-96 text-gray-700 h-8 border-2 border-gray-200 rounded-md p-2"
+                      className="input-field w-full sm:w-96 text-gray-700 h-8 border-2 border-gray-200 rounded-md p-2"
                     />
                     <ErrorMessage
                       name="totalAvailable"

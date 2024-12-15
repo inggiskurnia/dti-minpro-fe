@@ -114,8 +114,8 @@ const Transaction: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="flex justify-center mx-auto pt-28 pb-20">
-        <div className="bg-white shadow-lg w-1/3 p-8">
+      <div className="flex justify-center mx-auto pt-28 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="bg-white shadow-lg w-full max-w-2xl p-8">
           <h1 className="text-2xl text-center font-bold mb-4 text-gray-700">
             Transaction Details
           </h1>
@@ -133,26 +133,28 @@ const Transaction: React.FC = () => {
             Current Points: {userPoints}
           </p>
 
-          <div className="mb-4 flex gap-10">
-            <label className="block text-gray-700 text-sm mb-2">
-              Enter Points:
-            </label>
-            <input
-              type="number"
-              value={isNaN(pointsInput) ? "" : pointsInput}
-              onChange={(e) => setPointsInput(parseInt(e.target.value))}
-              className="shadow appearance-none border rounded w-1/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
+          <div className="mb-4 flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col flex-grow">
+              <label className="block text-gray-700 text-sm mb-2">
+                Enter Points:
+              </label>
+              <input
+                type="number"
+                value={isNaN(pointsInput) ? "" : pointsInput}
+                onChange={(e) => setPointsInput(parseInt(e.target.value))}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
             <button
               onClick={handlePointsCheck}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2"
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2 sm:mt-0"
             >
               Use Points
             </button>
-            {pointsError && (
-              <p className="text-red-500 text-xs italic">{pointsError}</p>
-            )}
           </div>
+          {pointsError && (
+            <p className="text-red-500 text-xs italic">{pointsError}</p>
+          )}
           <p className="text-gray-600 mb-4">
             Points Deduction: RP.{pointsDeduction.toFixed(2)}
           </p>

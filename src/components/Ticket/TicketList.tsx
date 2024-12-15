@@ -8,7 +8,7 @@ interface TicketListProps {
 
 const TicketList: React.FC<TicketListProps> = ({ tickets }) => {
   return (
-    <div className="px-14">
+    <div className="px-4 sm:px-6 lg:px-8">
       {tickets.map((ticket) => (
         <TicketItem key={ticket.ticketId} ticket={ticket} />
       ))}

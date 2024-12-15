@@ -27,13 +27,13 @@ const EventReview = () => {
       rating: rating,
       description: review,
     });
-    if (status == 200) {
-      const confirmed = window.confirm("Write review successfull !");
+    if (status === 200) {
+      const confirmed = window.confirm("Review submitted successfully!");
       if (confirmed) {
         router.push(`/user/${userId}/tickets`);
       }
     } else {
-      window.confirm("Write review failed !");
+      window.confirm("Review submission failed!");
     }
   };
 
@@ -41,13 +41,13 @@ const EventReview = () => {
     <div className="flex flex-col min-h-screen">
       <Navbar />
 
-      <div className="flex-grow flex justify-center pt-24 pb-20">
-        <div className="bg-white p-6 rounded-lg shadow-xl mx-auto w-1/3">
-          <h2 className="text-2xl font-bold text-gray-700 mb-4">
+      <div className="flex-grow flex justify-center pt-24 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="bg-white p-6 rounded-lg shadow-xl mx-auto w-full max-w-lg">
+          <h2 className="text-2xl font-bold text-gray-700 mb-4 text-center">
             Event Review
           </h2>
 
-          <div className="flex items-center mb-4">
+          <div className="flex items-center justify-center mb-4">
             {[1, 2, 3, 4, 5].map((star) => (
               <div
                 key={star}

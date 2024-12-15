@@ -77,7 +77,7 @@ const SearchEvent: React.FC<SearchEventProps> = ({ eventId, setEventId }) => {
           className="w-full md:w-96 rounded bg-eventureMainBg2 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-500"
         />
       </div>
-      <div className="block md:hidden">
+      <div className="flex justify-end md:hidden">
         {showInput ? (
           <input
             type="text"
