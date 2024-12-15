@@ -1,14 +1,38 @@
 "use client";
 
+import { postFeedback } from "@/api/postFeedback";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { useEvent } from "@/context/EventContext";
+import { useEventTicket } from "@/context/EventTicketContext";
+import { useUser } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const EventFeedback = () => {
+  const { userId } = useUser();
   const [feedback, setFeedback] = useState("");
+  const { eventTicketId } = useEventTicket();
+  const router = useRouter();
 
   const handleFeedbackChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFeedback(e.target.value);
+  };
+
+  const handleOnClick = async () => {
+    const status = await postFeedback({
+      userId: Number(userId),
+      eventTicketId: Number(eventTicketId),
+      feedback: feedback,
+    });
+    if (status == 200) {
+      const confirmed = window.confirm("Write feedback successfull !");
+      if (confirmed) {
+        router.push(`/user/${userId}/tickets`);
+      }
+    } else {
+      window.confirm("Write feedback failed !");
+    }
   };
 
   return (
@@ -30,6 +54,7 @@ const EventFeedback = () => {
 
           <div className="mt-4 flex justify-end">
             <button
+              onClick={handleOnClick}
               className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 focus:outline-none"
               disabled={!feedback}
             >

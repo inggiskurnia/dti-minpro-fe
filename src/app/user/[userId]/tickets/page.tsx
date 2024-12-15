@@ -7,11 +7,13 @@ const UserTickets: FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <h2 className="text-gray-700 text-3xl font-bold text-center pt-24">
-        User Tickets
-      </h2>
-      <div className="flex-grow flex justify-center">
-        <UserTicketList />
+      <div className=" pt-24 pb-20">
+        <h2 className="text-gray-700 text-3xl font-bold text-center">
+          User Tickets
+        </h2>
+        <div className="flex-grow flex justify-center">
+          <UserTicketList />
+        </div>
       </div>
       <Footer />
     </div>

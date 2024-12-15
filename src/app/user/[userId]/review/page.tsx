@@ -1,16 +1,40 @@
 "use client";
 
+import { postReview } from "@/api/postReview";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { useEventTicket } from "@/context/EventTicketContext";
+import { useUser } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 
 const EventReview = () => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
+  const { eventTicketId } = useEventTicket();
+  const { userId } = useUser();
+  const router = useRouter();
 
   const handleStarClick = (star: number) => {
     setRating(star);
+  };
+
+  const handleOnClick = async () => {
+    const status = await postReview({
+      userId: Number(userId),
+      eventTicketId: Number(eventTicketId),
+      rating: rating,
+      description: review,
+    });
+    if (status == 200) {
+      const confirmed = window.confirm("Write review successfull !");
+      if (confirmed) {
+        router.push(`/user/${userId}/tickets`);
+      }
+    } else {
+      window.confirm("Write review failed !");
+    }
   };
 
   return (
@@ -49,6 +73,7 @@ const EventReview = () => {
 
           <div className="mt-4 flex justify-end">
             <button
+              onClick={handleOnClick}
               className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 focus:outline-none"
               disabled={!review || rating === 0}
             >

@@ -1,28 +1,36 @@
+import { useEventTicket } from "@/context/EventTicketContext";
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaTicketAlt } from "react-icons/fa";
 
-interface Ticket {
+export interface UserTicket {
+  userTicketId: number;
   userId: number;
-  ticketId: number;
-  ticketName: string;
-  ticketDescription: string;
+  eventTicketId: number;
+  eventTicketName: string;
+  eventTicketDescription: string;
   totalTicket: number;
-  eventStartedAt: string;
-  eventEndedAt: string;
+  eventId: number;
+  eventStartedAt: Date;
+  eventEndedAt: Date;
   eventName: string;
   eventLocationDetail: string;
-  purchasedAt: string;
+  purchasedAt: Date;
 }
 
 interface UserTicketProps {
-  ticket: Ticket;
+  ticket: UserTicket;
 }
 
 const UserTicket: React.FC<UserTicketProps> = ({ ticket }) => {
   const { userId } = useUser();
   const router = useRouter();
+  const { setEventTicketId } = useEventTicket();
+
+  useEffect(() => {
+    setEventTicketId(ticket.eventTicketId);
+  }, [ticket.eventTicketId]);
 
   const handleFeedbackClick = () => {
     router.push(`/user/${userId}/feedback`);
@@ -33,12 +41,15 @@ const UserTicket: React.FC<UserTicketProps> = ({ ticket }) => {
   };
 
   return (
-    <div key={ticket.ticketId} className="bg-white shadow-md rounded-lg p-6">
+    <div
+      key={ticket.userTicketId}
+      className="bg-white shadow-md rounded-lg p-6"
+    >
       <h2 className="text-xl font-bold text-gray-700 mb-2 flex items-center">
         <FaTicketAlt className="text-blue-500 mr-2" />
-        {ticket.ticketName}
+        {ticket.eventTicketName}
       </h2>
-      <p className="text-gray-700 mb-2">{ticket.ticketDescription}</p>
+      <p className="text-gray-700 mb-2">{ticket.eventTicketDescription}</p>
       <div className="text-gray-600 mb-4 space-y-2">
         <p className="flex items-center">
           <FaCalendarAlt className="mr-2 text-green-500" />

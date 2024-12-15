@@ -1,16 +1,18 @@
 import axios from "axios";
 
-interface UserTicket {
+export interface UserTicket {
+  userTicketId: number;
   userId: number;
-  ticketId: number;
-  ticketName: string;
-  ticketDescription: string;
+  eventTicketId: number;
+  eventTicketName: string;
+  eventTicketDescription: string;
   totalTicket: number;
-  eventStartedAt: string;
-  eventEndedAt: string;
+  eventId: number;
+  eventStartedAt: Date;
+  eventEndedAt: Date;
   eventName: string;
   eventLocationDetail: string;
-  purchasedAt: string;
+  purchasedAt: Date;
 }
 
 interface UserTicketResponse {

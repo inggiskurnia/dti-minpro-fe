@@ -36,12 +36,6 @@ const VoucherItem: React.FC<VoucherItemProps> = ({ voucher }) => {
       <div className="flex-grow">
         <h2 className="text-xl font-bold text-gray-800">{voucher.name}</h2>
         <p className="text-gray-600">{voucher.description}</p>
-        {/* <p className="text-gray-600">Code: {voucher.code}</p> */}
-        {/* <p className="text-gray-600">Amount: ${voucher.amount.toFixed(2)}</p> */}
-        {/* <p className="text-gray-600">
-          Available: {voucher.totalAvailable}/{voucher.totalCapacity}
-        </p> */}
-        {/* <p className="text-gray-600">Validity: {voucher.validityPeriod}</p> */}
       </div>
       <button
         onClick={handleClaim}

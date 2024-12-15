@@ -7,6 +7,7 @@ import { TransactionProvider } from "@/context/TransactionContext";
 import { UserProvider } from "@/context/UserContext";
 import { EventProvider } from "@/context/EventContext";
 import { UserVoucherProvider } from "@/context/UserVoucherContext";
+import { EventTicketProvider } from "@/context/EventTicketContext";
 // import { auth } from "@/auth";
 
 const geistSans = Geist({
@@ -32,11 +33,13 @@ export default function RootLayout({
           <EventProvider>
             <TransactionProvider>
               <UserVoucherProvider>
-                <body
-                  className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-                >
-                  {children}
-                </body>
+                <EventTicketProvider>
+                  <body
+                    className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                  >
+                    {children}
+                  </body>
+                </EventTicketProvider>
               </UserVoucherProvider>
             </TransactionProvider>
           </EventProvider>

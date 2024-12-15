@@ -43,7 +43,7 @@ const UserTicketList: React.FC = () => {
           }`}
         >
           {tickets.map((ticket) => (
-            <UserTicket key={ticket.ticketId} ticket={ticket} />
+            <UserTicket key={ticket.userTicketId} ticket={ticket} />
           ))}
         </div>
       )}
