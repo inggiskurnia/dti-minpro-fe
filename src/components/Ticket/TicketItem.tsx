@@ -37,7 +37,7 @@ const TicketItem: React.FC<TicketItemProps> = ({ ticket }) => {
     setTicketName(ticket.ticketName);
     setTicketDescription(ticket.description);
 
-    redirect("/transaction");
+    redirect("/checkout");
   };
 
   return (

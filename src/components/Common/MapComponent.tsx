@@ -28,7 +28,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
     setCenter([latitude, longitude]);
   }, [latitude, longitude]);
 
-  if (!isClient) return null; // Return null on the server-side
+  if (!isClient) return null;
 
   const customIcon = new L.Icon({
     iconUrl: require("leaflet/dist/images/marker-icon.png"),

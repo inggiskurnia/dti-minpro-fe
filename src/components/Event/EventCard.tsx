@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FC } from "react";
+import { FaRegCalendarAlt, FaTicketAlt, FaUserCircle } from "react-icons/fa"; // Import icons
 
 interface EventCardProps {
   eventId: number;
@@ -29,26 +30,40 @@ const EventCard: FC<EventCardProps> = ({
 
   return (
     <Link href={`/event/${eventId}`}>
-      <div className="m-4 max-w-sm overflow-hidden rounded bg-white shadow-lg">
+      <div className="m-4 max-w-sm overflow-hidden rounded-lg bg-white shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:scale-105">
         <div className="relative h-56 w-full">
           <img
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover rounded-t-lg"
             src={thumbnail}
             alt={eventName}
           />
         </div>
         <div className="px-6 py-4">
-          <div className="mb-2 text-xl font-bold text-black">{eventName}</div>
-          <p className="text-base text-gray-700">{price}</p>
-          <p className="text-base text-gray-700">{formattedDate}</p>
-          <hr className="my-2 border-gray-300" />
-          <div className="flex items-center">
+          <div className="mb-2 text-2xl font-semibold text-black">
+            {eventName}
+          </div>
+          <div className="flex items-center space-x-2">
+            <FaTicketAlt className="text-gray-600" />
+            <p className="text-lg font-medium text-gray-800">{price}</p>
+          </div>
+          <div className="flex items-center space-x-2 mt-1">
+            <FaRegCalendarAlt className="text-gray-600" />
+            <p className="text-sm text-gray-500">{formattedDate}</p>
+          </div>
+          <hr className="my-3 border-gray-300" />
+          <div className="flex items-center space-x-3">
             <img
               src={organizerPicture}
               alt={organizer}
-              className="mr-2 h-8 w-8 rounded-full"
+              className="h-10 w-10 rounded-full border-2 border-gray-300"
             />
-            <p className="text-base text-gray-700">{organizer}</p>
+            <div className="flex flex-col">
+              <p className="text-sm font-medium text-gray-700">{organizer}</p>
+              <div className="flex items-center space-x-1 text-gray-500">
+                <FaUserCircle className="text-gray-600" />
+                <span className="text-xs">Organizer</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

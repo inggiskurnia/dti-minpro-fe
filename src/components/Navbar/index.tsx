@@ -1,17 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FC } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import Link from "next/link";
-import { NavbarData } from "@/static/navbar";
 import { FaSearch, FaUserCircle } from "react-icons/fa";
 import SearchEvent from "../Event/SearchEvent";
+import { useUser } from "@/context/UserContext";
+
+interface MenuData {
+  title: string;
+  link: string;
+}
 
 const Navbar: FC = () => {
+  const { userId } = useUser();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [isSubmenuOpen, setSubmenuOpen] = useState<boolean>(false);
   const [eventId, setEventId] = useState<number | undefined>(undefined);
+
+  const navbarData: MenuData[] = [
+    {
+      title: "Profile",
+      link: "/profile",
+    },
+    {
+      title: "Tickets",
+      link: `/user/${userId}/tickets`,
+    },
+    {
+      title: "Transactions",
+      link: `/user/${userId}/transactions`,
+    },
+    {
+      title: "Voucher",
+      link: "/voucher",
+    },
+    {
+      title: "Points",
+      link: "/points",
+    },
+  ];
 
   const toggleSubMenu = () => {
     setSubmenuOpen(!isSubmenuOpen);
@@ -36,31 +65,28 @@ const Navbar: FC = () => {
       </div>
 
       <div className="">
-        {NavbarData.map((menu, index) => (
-          <div
-            key={index}
-            className="relative hidden w-full justify-center px-10 md:flex md:w-64"
-            onMouseEnter={() => toggleSubMenu()}
-            onMouseLeave={() => toggleSubMenu()}
-          >
-            <button className="py-2">
-              <FaUserCircle size={32}></FaUserCircle>
-            </button>
-            {isSubmenuOpen && (
-              <div className="absolute top-12 z-10 flex h-72 w-full items-center rounded bg-white shadow-lg">
-                <div className="w-full rounded-lg">
-                  {menu.submenu.map((submenu, index) => (
-                    <Link href={submenu.link} key={index}>
-                      <div className="mx-4 my-2 cursor-pointer rounded-lg px-8 py-2 text-gray-600 hover:bg-gray-200">
-                        {submenu.title}
-                      </div>
-                    </Link>
-                  ))}
-                </div>
+        <div
+          className="relative hidden w-full justify-center px-10 md:flex md:w-64"
+          onMouseEnter={() => toggleSubMenu()}
+          onMouseLeave={() => toggleSubMenu()}
+        >
+          <button className="py-2">
+            <FaUserCircle size={32}></FaUserCircle>
+          </button>
+          {isSubmenuOpen && (
+            <div className="absolute top-12 z-10 flex h-72 w-full items-center rounded bg-white shadow-lg">
+              <div className="w-full rounded-lg">
+                {navbarData.map((submenu, index) => (
+                  <Link href={submenu.link} key={index}>
+                    <div className="mx-4 my-2 cursor-pointer rounded-lg px-8 py-2 text-gray-600 hover:bg-gray-200">
+                      {submenu.title}
+                    </div>
+                  </Link>
+                ))}
               </div>
-            )}
-          </div>
-        ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="md:hidden">
@@ -73,7 +99,7 @@ const Navbar: FC = () => {
           isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        {NavbarData[0].submenu.map((submenu, index) => (
+        {navbarData.map((submenu, index) => (
           <Link href={submenu.link} key={index}>
             <button className="px-8 text-left text-lg">{submenu.title}</button>
           </Link>

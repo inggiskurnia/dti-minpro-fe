@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { redirect } from "next/navigation";
 import { useTransaction } from "@/context/TransactionContext";
 import { useUserVoucher } from "@/context/UserVoucherContext";
 import UserVoucherSelection from "@/components/Voucher/UserVoucherSelection";
@@ -12,6 +11,7 @@ import { getVouchersById } from "@/api/getVouchers";
 import { Voucher } from "@/types/voucher";
 import { getTotalUserPoints } from "@/api/getUserPoints";
 import { createTransaction } from "@/api/createTransaction";
+import { useRouter } from "next/navigation";
 
 const Transaction: React.FC = () => {
   const { userId } = useUser();
@@ -23,6 +23,8 @@ const Transaction: React.FC = () => {
   const [pointsInput, setPointsInput] = useState(0);
   const [pointsDeduction, setPointsDeduction] = useState(0);
   const [pointsError, setPointsError] = useState("");
+
+  const router = useRouter();
 
   const getVoucherDetail = async (voucherId: number) => {
     try {
@@ -74,11 +76,19 @@ const Transaction: React.FC = () => {
       console.error("User ID or Ticket ID is null.");
       return;
     }
+    const confirmed = window.confirm(
+      "Are you sure you want to complete this purchase?"
+    );
+    if (!confirmed) {
+      return;
+    }
     const transactionData = {
       userId: userId,
       eventTicketId: ticketId,
       totalTicket: quantity,
       originalAmount: originalPrice,
+      userVoucherId: selectedUserVoucher?.userVoucherId,
+      voucherId: selectedUserVoucher?.voucherId,
       voucherDeduction: voucherDeduction,
       pointsDeduction: pointsDeduction,
       totalAmount: originalPrice - voucherDeduction - pointsDeduction,
@@ -88,7 +98,7 @@ const Transaction: React.FC = () => {
       const response = await createTransaction(transactionData);
       console.log("Transaction successful:", response);
       if (response.success) {
-        redirect("/");
+        router.push(`/user/${userId}/transactions`);
       }
     } catch (error) {
       console.error("Error completing transaction:", error);
