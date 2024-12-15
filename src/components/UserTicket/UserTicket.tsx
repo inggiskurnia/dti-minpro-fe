@@ -43,16 +43,15 @@ const UserTicket: React.FC<UserTicketProps> = ({ ticket }) => {
   return (
     <div
       key={ticket.userTicketId}
-      className="bg-white shadow-xl rounded-lg p-6 mb-4 lg:mb-0 flex flex-col lg:flex-row lg:items-center"
+      className="bg-white shadow-xl rounded-lg p-8 space-y-4 mb-4 lg:mb-0 flex-col "
     >
       <h2 className="text-xl font-bold text-gray-700 mb-2 flex items-center">
         <FaTicketAlt className="text-blue-500 mr-2" />
         {ticket.eventTicketName}
       </h2>
       <p className="text-gray-700 mb-2">{ticket.eventTicketDescription}</p>
-      <div className="text-gray-600 mb-4 lg:mb-0 lg:ml-6 space-y-2 lg:space-y-0 lg:space-x-2 lg:flex lg:flex-wrap">
+      <div className="text-gray-600 mb-4 lg:mb-0 lg:ml-6 space-y-3 lg:space-y-0 lg:space-x-3 lg:flex lg:flex-wrap">
         <p className="flex items-center lg:w-1/2">
-          <FaCalendarAlt className="mr-2 text-green-500" />
           Event: <span className="ml-1 font-semibold">{ticket.eventName}</span>
         </p>
         <p className="flex items-center lg:w-1/2">
@@ -69,7 +68,7 @@ const UserTicket: React.FC<UserTicketProps> = ({ ticket }) => {
             {new Date(ticket.eventEndedAt).toLocaleString()}
           </span>
         </p>
-        <p className="flex items-center lg:w-1/2">
+        <p className="flex items-center">
           <FaMapMarkerAlt className="mr-2 text-red-500" />
           Location:{" "}
           <span className="ml-1 font-semibold">

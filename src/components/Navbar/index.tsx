@@ -20,12 +20,10 @@ const Navbar: FC = () => {
   const [eventId, setEventId] = useState<number | undefined>(undefined);
 
   const navbarData: MenuData[] = [
-    // { title: "Profile", link: "/profile" },
     { title: "Tickets", link: `/user/${userId}/tickets` },
     { title: "Transactions", link: `/user/${userId}/transactions` },
     { title: "Voucher", link: `/user/${userId}/vouchers` },
     { title: "Create New Event", link: `/event/create` },
-    // { title: "Points", link: "/points" },
   ];
 
   const toggleSubMenu = () => {
