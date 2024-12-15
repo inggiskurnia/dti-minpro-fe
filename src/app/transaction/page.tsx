@@ -3,25 +3,23 @@
 import React, { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 import { useTransaction } from "@/context/TransactionContext";
-import {
-  useUserVoucher,
-  UserVoucherProvider,
-} from "@/context/UserVoucherContext";
+import { useUserVoucher } from "@/context/UserVoucherContext";
 import UserVoucherSelection from "@/components/Voucher/UserVoucherSelection";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useUser } from "@/context/UserContext";
 import { getVouchersById } from "@/api/getVouchers";
 import { Voucher } from "@/types/voucher";
+import { getTotalUserPoints } from "@/api/getUserPoints";
+import { createTransaction } from "@/api/createTransaction";
 
 const Transaction: React.FC = () => {
   const { userId } = useUser();
   const { ticketId, ticketName, quantity, originalPrice } = useTransaction();
   const { selectedUserVoucher } = useUserVoucher();
   const [voucherDeduction, setVoucherDeduction] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(originalPrice);
   const [voucherDetail, setVoucherDetail] = useState<Voucher | null>(null);
-  const [userPoints, setUserPoints] = useState(500); // Example points, ideally fetched from backend
+  const [userPoints, setUserPoints] = useState(0);
   const [pointsInput, setPointsInput] = useState(0);
   const [pointsDeduction, setPointsDeduction] = useState(0);
   const [pointsError, setPointsError] = useState("");
@@ -47,35 +45,54 @@ const Transaction: React.FC = () => {
     fetchVoucherDetail();
   }, [selectedUserVoucher]);
 
+  const fetchTotalPoints = async () => {
+    if (userId) {
+      const totalPoints = await getTotalUserPoints(userId);
+      setUserPoints(totalPoints);
+    }
+  };
+
   useEffect(() => {
     if (voucherDetail) {
       const deduction = voucherDetail.amount;
       setVoucherDeduction(deduction);
-      setTotalPrice(originalPrice - deduction);
     }
   }, [voucherDetail, originalPrice]);
 
   const handlePointsCheck = () => {
+    fetchTotalPoints();
     if (pointsInput > userPoints) {
       setPointsError("Insufficient points.");
     } else {
       setPointsError("");
       setPointsDeduction(pointsInput);
-      setTotalPrice((prevPrice) => prevPrice - pointsInput);
     }
   };
 
-  const handlePurchase = () => {
-    console.log("Completing purchase with the following data:", {
+  const handlePurchase = async () => {
+    if (userId === null || ticketId === null) {
+      console.error("User ID or Ticket ID is null.");
+      return;
+    }
+    const transactionData = {
       userId: userId,
       eventTicketId: ticketId,
       totalTicket: quantity,
       originalAmount: originalPrice,
       voucherDeduction: voucherDeduction,
       pointsDeduction: pointsDeduction,
-      totalAmount: totalPrice,
-    });
-    // redirect("/success");
+      totalAmount: originalPrice - voucherDeduction - pointsDeduction,
+    };
+    try {
+      console.log(transactionData);
+      const response = await createTransaction(transactionData);
+      console.log("Transaction successful:", response);
+      if (response.success) {
+        redirect("/");
+      }
+    } catch (error) {
+      console.error("Error completing transaction:", error);
+    }
   };
 
   if (!ticketId) return <div>Loading...</div>;
@@ -98,14 +115,17 @@ const Transaction: React.FC = () => {
           <p className="text-gray-600 mb-4">
             Voucher Deduction: RP.{voucherDeduction.toFixed(2)}
           </p>
+          <p className="text-gray-600 text-sm font-bold">
+            Current Points: {userPoints}
+          </p>
 
           <div className="mb-4 flex gap-10">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+            <label className="block text-gray-700 text-sm mb-2">
               Enter Points:
             </label>
             <input
               type="number"
-              value={pointsInput}
+              value={isNaN(pointsInput) ? "" : pointsInput}
               onChange={(e) => setPointsInput(parseInt(e.target.value))}
               className="shadow appearance-none border rounded w-1/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
@@ -113,7 +133,7 @@ const Transaction: React.FC = () => {
               onClick={handlePointsCheck}
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2"
             >
-              Check Points
+              Use Points
             </button>
             {pointsError && (
               <p className="text-red-500 text-xs italic">{pointsError}</p>
@@ -123,7 +143,8 @@ const Transaction: React.FC = () => {
             Points Deduction: RP.{pointsDeduction.toFixed(2)}
           </p>
           <p className="text-gray-600 mb-4">
-            Total Amount: RP.{totalPrice.toFixed(2)}
+            Total Amount: RP.
+            {originalPrice - voucherDeduction - pointsDeduction}
           </p>
           <div className="flex justify-center mt-10">
             <button

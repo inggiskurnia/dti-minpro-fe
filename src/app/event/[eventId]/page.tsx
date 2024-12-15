@@ -33,7 +33,7 @@ const EventPage: React.FC = () => {
   useEffect(() => {
     setIsClient(true);
     setEventId(Number(eventId));
-    setUserId(8); // change this to user session (dont forget)
+    setUserId(9); // change this to user session (dont forget)
   }, [eventId, setEventId]);
 
   const {
@@ -175,7 +175,7 @@ const EventPage: React.FC = () => {
               </p>
             </div>
           </div>
-          {vouchersResponse?.success ? (
+          {vouchersResponse?.data.length > 0 ? (
             <VoucherList vouchers={vouchersResponse.data} />
           ) : (
             <div>No vouchers available</div>
