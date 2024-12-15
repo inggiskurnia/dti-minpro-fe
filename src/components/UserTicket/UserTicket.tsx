@@ -43,7 +43,7 @@ const UserTicket: React.FC<UserTicketProps> = ({ ticket }) => {
   return (
     <div
       key={ticket.userTicketId}
-      className="bg-white shadow-md rounded-lg p-6"
+      className="bg-white shadow-xl rounded-lg p-6"
     >
       <h2 className="text-xl font-bold text-gray-700 mb-2 flex items-center">
         <FaTicketAlt className="text-blue-500 mr-2" />

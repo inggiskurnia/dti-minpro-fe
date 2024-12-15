@@ -28,7 +28,7 @@ export const checkVoucherClaim = async ({
 }: CheckVoucherClaimParams): Promise<boolean> => {
   try {
     const response = await axios.get<VoucherClaimResponse>(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/${userId}/vouchers`
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/${userId}/voucher`
     );
 
     if (response.data.success) {

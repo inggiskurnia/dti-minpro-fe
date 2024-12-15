@@ -96,12 +96,16 @@ const Transaction: React.FC = () => {
     try {
       console.log(transactionData);
       const response = await createTransaction(transactionData);
-      console.log("Transaction successful:", response);
+
       if (response.success) {
-        router.push(`/user/${userId}/transactions`);
+        const confirmed = window.confirm("Transaction successful !");
+        if (!confirmed) {
+          router.push(`/user/${userId}/transactions`);
+          return;
+        }
       }
     } catch (error) {
-      console.error("Error completing transaction:", error);
+      window.Error("Error completing transaction");
     }
   };
 

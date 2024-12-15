@@ -41,7 +41,7 @@ const TicketItem: React.FC<TicketItemProps> = ({ ticket }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 mb-4 flex items-center">
+    <div className="bg-white shadow-xl rounded-lg p-4 mb-4 flex items-center">
       <FaTicketAlt className="text-blue-600 mr-4" size={40} />
       <div className="flex-grow">
         <h2 className="text-xl font-bold text-gray-800">{ticket.ticketName}</h2>

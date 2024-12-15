@@ -10,11 +10,14 @@ const TransactionPage: FC = () => {
     <>
       <Navbar></Navbar>
       <div className="flex justify-center">
-        <div className="pt-24 pb-20 w-[50%] space-y-5">
-          <h2 className="text-gray-700 text-3xl text-center">
+        <div className="flex-grow pt-24 pb-20 w-[50%] space-y-5">
+          <h2 className="text-gray-700 text-3xl font-bold text-center">
             Transaction List
           </h2>
-          <div className="flex-grow flex justify-center">
+          <p className="text-gray-500 text-center">
+            Transaction history made by user
+          </p>
+          <div className="flex justify-center">
             <TransactionList></TransactionList>
           </div>
         </div>

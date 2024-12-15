@@ -39,7 +39,7 @@ const EventFeedback = () => {
     <div className="flex flex-col min-h-screen">
       <Navbar></Navbar>
       <div className="flex-grow flex justify-center pt-24 pb-20">
-        <div className="bg-white p-6 rounded-lg shadow-md w-1/3 mx-auto">
+        <div className="bg-white p-6 rounded-lg shadow-xl w-1/3 mx-auto">
           <h2 className="text-2xl font-bold mb-4 text-gray-700">
             Event Feedback
           </h2>

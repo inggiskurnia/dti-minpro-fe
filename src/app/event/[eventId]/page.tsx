@@ -103,7 +103,7 @@ const EventPage: React.FC = () => {
             >
               Description
             </button>
-            {ticketsResponse?.success ? (
+            {ticketsResponse?.data.length > 0 ? (
               <button
                 className={`py-2 px-4 font-semibold ${activeTab === "ticket" ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600"}`}
                 onClick={() => setActiveTab("ticket")}
@@ -123,7 +123,7 @@ const EventPage: React.FC = () => {
             )}
             {activeTab === "ticket" &&
               isClient &&
-              (ticketsResponse?.success ? (
+              (ticketsResponse?.data.length > 0 ? (
                 <TicketList tickets={ticketsResponse.data} />
               ) : (
                 <div>No tickets available</div>

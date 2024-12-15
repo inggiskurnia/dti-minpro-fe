@@ -42,7 +42,7 @@ const EventReview = () => {
       <Navbar />
 
       <div className="flex-grow flex justify-center pt-24 pb-20">
-        <div className="bg-white p-6 rounded-lg shadow-md mx-auto w-1/3">
+        <div className="bg-white p-6 rounded-lg shadow-xl mx-auto w-1/3">
           <h2 className="text-2xl font-bold text-gray-700 mb-4">
             Event Review
           </h2>

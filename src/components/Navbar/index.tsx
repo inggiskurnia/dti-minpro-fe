@@ -34,7 +34,7 @@ const Navbar: FC = () => {
     },
     {
       title: "Voucher",
-      link: "/voucher",
+      link: `/user/${userId}/vouchers`,
     },
     {
       title: "Points",

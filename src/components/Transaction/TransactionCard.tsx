@@ -12,7 +12,7 @@ interface TransactionCardProps {
 
 const TransactionCard: React.FC<TransactionCardProps> = ({ transaction }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg px-10 py-6 mb-6">
+    <div className="bg-white shadow-xl rounded-lg px-10 py-6 mb-6">
       <h3 className="text-lg font-bold mb-4 text-gray-800 flex items-center">
         <MdConfirmationNumber className="text-blue-500 mr-2" />
         Invoice Number: {transaction.invoiceNumber}

@@ -25,8 +25,10 @@ export interface UserVoucher {
   voucherId: number;
   voucherCode: string;
   voucherName: string;
+  voucherAmount: number;
   voucherDescription: string;
-  expiredAt: string;
+  voucherType: string;
+  expiredAt: Date;
 }
 
 export interface GetUserVouchersResponse {
