@@ -8,7 +8,7 @@ import { UserProvider } from "@/context/UserContext";
 import { EventProvider } from "@/context/EventContext";
 import { UserVoucherProvider } from "@/context/UserVoucherContext";
 import { EventTicketProvider } from "@/context/EventTicketContext";
-// import { auth } from "@/auth";
+import { auth } from "@/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,12 +20,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // const session = await auth();
+  const session = await auth();
   return (
     <html lang="en">
       <ReactQueryProvider>
@@ -34,11 +34,13 @@ export default function RootLayout({
             <TransactionProvider>
               <UserVoucherProvider>
                 <EventTicketProvider>
-                  <body
-                    className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-                  >
-                    {children}
-                  </body>
+                  <SessionProvider refetchInterval={120} session={session}>
+                    <body
+                      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                    >
+                      {children}
+                    </body>
+                  </SessionProvider>
                 </EventTicketProvider>
               </UserVoucherProvider>
             </TransactionProvider>

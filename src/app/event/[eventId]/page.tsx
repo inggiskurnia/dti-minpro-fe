@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getEventById, GetEventResponseDTO } from "@/api/getEvents";
 import getTickets from "@/api/getTickets";
-import { getVouchersByEventId } from "@/api/getVouchers";
+import { getAllVouchers, getVouchersByEventId } from "@/api/getVouchers";
 import { TicketResponse } from "@/types/ticket";
 import { VoucherResponse } from "@/types/voucher";
 import Navbar from "@/components/Navbar";
@@ -22,18 +22,18 @@ import {
 import formatDateRange from "@/utils/common/formatDateRange";
 import { useEvent } from "@/context/EventContext";
 import { useUser } from "@/context/UserContext";
+import { useSession } from "next-auth/react";
 
 const EventPage: React.FC = () => {
   const { eventId } = useParams();
   const { setEventId } = useEvent();
   const [activeTab, setActiveTab] = useState("desc");
   const [isClient, setIsClient] = useState(false);
-  const { setUserId } = useUser();
+  const { userId } = useUser();
 
   useEffect(() => {
     setIsClient(true);
     setEventId(Number(eventId));
-    setUserId(9); // change this to user session (don't forget)
   }, [eventId, setEventId]);
 
   const {
@@ -61,20 +61,14 @@ const EventPage: React.FC = () => {
     error: vouchersError,
     isLoading: vouchersLoading,
   } = useQuery<VoucherResponse, Error>({
-    queryKey: ["vouchers", eventId],
-    queryFn: () => getVouchersByEventId(Number(eventId)),
-    enabled: !!eventId,
+    queryKey: ["vouchers"],
+    queryFn: getAllVouchers,
   });
 
-  if (isLoading || ticketsLoading || vouchersLoading)
-    return <div>Loading...</div>;
-  if (error || ticketsError || vouchersError)
-    return (
-      <div>
-        {error?.message || ticketsError?.message || vouchersError?.message}
-      </div>
-    );
-  if (!event || !ticketsResponse?.success || !vouchersResponse?.success)
+  if (isLoading || ticketsLoading) return <div>Loading...</div>;
+  if (error || ticketsError)
+    return <div>{error?.message || ticketsError?.message}</div>;
+  if (!event || !ticketsResponse?.success)
     return <div>No event, tickets, or vouchers found</div>;
 
   const { formattedDateRange, formattedTimeRange } = formatDateRange(
@@ -170,7 +164,9 @@ const EventPage: React.FC = () => {
               </p>
             </div>
           </div>
-          {vouchersResponse?.data.length > 0 ? (
+          {vouchersResponse &&
+          vouchersResponse.data &&
+          vouchersResponse.data.length > 0 ? (
             <VoucherList vouchers={vouchersResponse.data} />
           ) : (
             <div>No vouchers available</div>

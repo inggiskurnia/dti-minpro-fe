@@ -7,8 +7,6 @@ export type Voucher = {
   totalCapacity: number;
   totalAvailable: number;
   validityPeriod: string;
-  eventId: number;
-  eventName: string;
   voucherTypeId: number;
   voucherTypeName: string;
 };

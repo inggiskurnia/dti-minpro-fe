@@ -33,28 +33,33 @@ const TransactionCard: React.FC<TransactionCardProps> = ({ transaction }) => {
           <FaMoneyBillWave className="text-yellow-500 mr-2" />
           <span>Original Amount:</span>
           <span className="ml-1 font-semibold">
-            RP.{transaction.originalAmount.toFixed(2)}
+            Rp.
+            {new Intl.NumberFormat("id-ID").format(transaction.originalAmount)}
           </span>
         </p>
         <p className="flex items-center">
           <RiCoupon3Fill className="text-red-500 mr-2" />
           <span>Voucher Deduction:</span>
           <span className="ml-1 font-semibold">
-            RP.{transaction.voucherDeduction.toFixed(2)}
+            Rp.
+            {new Intl.NumberFormat("id-ID").format(
+              transaction.voucherDeduction
+            )}
           </span>
         </p>
         <p className="flex items-center">
           <RiCoupon3Fill className="text-red-500 mr-2" />
           <span>Points Deduction:</span>
           <span className="ml-1 font-semibold">
-            RP.{transaction.pointsDeduction.toFixed(2)}
+            Rp.
+            {new Intl.NumberFormat("id-ID").format(transaction.pointsDeduction)}
           </span>
         </p>
         <p className="flex items-center">
           <FaMoneyBillWave className="text-yellow-500 mr-2" />
           <span>Total Amount:</span>
           <span className="ml-1 font-semibold">
-            RP.{transaction.totalAmount.toFixed(2)}
+            Rp.{new Intl.NumberFormat("id-ID").format(transaction.totalAmount)}
           </span>
         </p>
         <p className="flex items-center">
