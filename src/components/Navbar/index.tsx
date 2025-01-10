@@ -60,13 +60,13 @@ const Navbar: FC = () => {
               <FaUserCircle size={32} />
             </button>
             {isSubmenuOpen && (
-              <div className="absolute top-12 z-10 flex h-72 w-full items-center rounded bg-white shadow-lg">
+              <div className="absolute top-12 z-10 flex py-4 w-full items-center rounded bg-white shadow-lg">
                 <div className="w-full rounded-lg">
                   {session?.user.roles.includes("USER") && (
                     <Link href="/registerOrganizer">
-                      <button className="cursor-pointer px-4 py-2 text-sm text-blue-500 hover:bg-gray-100 mb-2">
+                      <div className="mx-4 my-2 cursor-pointer rounded-lg px-8 py-2 text-gray-600 hover:bg-gray-200">
                         Register as Organizer
-                      </button>
+                      </div>
                     </Link>
                   )}
                   {navbarData.map((submenu, index) => (
@@ -76,12 +76,12 @@ const Navbar: FC = () => {
                       </div>
                     </Link>
                   ))}
-                  <button
+                  <div
                     onClick={handleLogout}
-                    className="cursor-pointer px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                    className="mx-4 my-2 cursor-pointer rounded-lg px-8 py-2 text-gray-600 hover:bg-gray-200"
                   >
                     Logout
-                  </button>
+                  </div>
                 </div>
               </div>
             )}

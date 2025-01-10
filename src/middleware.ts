@@ -6,7 +6,6 @@ const PUBLIC_PATHS = ["/login", "/register", "/transactiondetail"];
 const PROTECTED_PATHS = ["/dashboard", "/trx/reports"];
 const ROLE_PATHS = {
   ORGANIZER: ["/dashboard"],
-  // Admin can access everything
   ADMIN: ["*"],
 };
 
@@ -27,7 +26,10 @@ function hasRequiredRole(userRoles: string[], pathname: string) {
     return true;
   }
   for (const [role, paths] of Object.entries(ROLE_PATHS)) {
-    if (paths.some((path) => pathname.startsWith(path)) && userRoles.includes(role)) {
+    if (
+      paths.some((path) => pathname.startsWith(path)) &&
+      userRoles.includes(role)
+    ) {
       return true;
     }
   }
