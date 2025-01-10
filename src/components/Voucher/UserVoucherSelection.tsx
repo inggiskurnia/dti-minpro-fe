@@ -38,7 +38,10 @@ const UserVoucherSelection: React.FC = () => {
         {userVoucherResponse.map((userVoucher) => (
           <li key={userVoucher.voucherId} className="mb-2">
             <button
-              onClick={() => setSelectedUserVoucher(userVoucher)}
+              onClick={() => {
+                setSelectedUserVoucher(userVoucher);
+                console.log(userVoucher);
+              }}
               className={`py-1 px-4 rounded ${selectedUserVoucher?.voucherId === userVoucher.voucherId ? "bg-gray-500 text-white" : "bg-gray-200 text-gray-700"}`}
             >
               {userVoucher.voucherName} - Code: {userVoucher.voucherCode}

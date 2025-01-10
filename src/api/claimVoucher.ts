@@ -11,9 +11,8 @@ export const claimVoucher = async ({
 }: ClaimVoucherParams): Promise<boolean> => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/voucher`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/${userId}/voucher`,
       {
-        userId: userId,
         voucherId: voucherId,
       }
     );

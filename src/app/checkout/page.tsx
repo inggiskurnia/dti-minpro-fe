@@ -33,7 +33,7 @@ const Transaction: React.FC = () => {
       try {
         if (selectedUserVoucher) {
           const voucher = await getVouchersById(selectedUserVoucher.voucherId);
-          setVoucherDetail(voucher);
+          setVoucherDeduction(originalPrice * (voucher.amount / 100));
         }
       } catch (error) {
         console.error("Error fetching voucher detail:", error);
@@ -98,7 +98,7 @@ const Transaction: React.FC = () => {
 
       if (response.success) {
         const confirmed = window.confirm("Transaction successful !");
-        if (!confirmed) {
+        if (confirmed) {
           router.push(`/user/${userId}/transactions`);
           return;
         }

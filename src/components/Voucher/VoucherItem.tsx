@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Voucher } from "@/types/voucher";
 import { FaGift } from "react-icons/fa";
-import { useEvent } from "@/context/EventContext";
-import { checkVoucherClaim } from "@/api/getUserVoucher";
+import { getUserVoucherByVoucherId } from "@/api/getUserVoucher";
 import { claimVoucher } from "@/api/claimVoucher";
 import { useUser } from "@/context/UserContext";
 
@@ -12,8 +11,27 @@ interface VoucherItemProps {
 
 const VoucherItem: React.FC<VoucherItemProps> = ({ voucher }) => {
   const { userId } = useUser();
-  const { eventId } = useEvent();
   const [claimed, setClaimed] = useState(false);
+
+  useEffect(() => {
+    const fetchUserVoucher = async () => {
+      try {
+        if (userId && voucher) {
+          const response = await getUserVoucherByVoucherId({
+            userId: userId,
+            voucherId: voucher.voucherId,
+          });
+          if (response.success) {
+            setClaimed(true);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUserVoucher();
+  }, [claimed]);
 
   const handleClaim = async () => {
     if (claimed) return;
