@@ -62,13 +62,13 @@ const Navbar: FC = () => {
             {isSubmenuOpen && (
               <div className="absolute top-12 z-10 flex py-4 w-full items-center rounded bg-white shadow-lg">
                 <div className="w-full rounded-lg">
-                  {session?.user.roles.includes("USER") && (
+                  {/* {session?.user.roles.includes("USER") && (
                     <Link href="/registerOrganizer">
                       <div className="mx-4 my-2 cursor-pointer rounded-lg px-8 py-2 text-gray-600 hover:bg-gray-200">
                         Register as Organizer
                       </div>
                     </Link>
-                  )}
+                  )} */}
                   {navbarData.map((submenu, index) => (
                     <Link href={submenu.link} key={index}>
                       <div className="mx-4 my-2 cursor-pointer rounded-lg px-8 py-2 text-gray-600 hover:bg-gray-200">
@@ -89,61 +89,50 @@ const Navbar: FC = () => {
         ) : (
           <>
             <Link href="/login">
-              <button className="ml-4 rounded-md px-4 py-2 text-white hover:bg-gray-700">
+              <button className="ml-4 rounded-md px-2 md:px-4 py-2 text-white hover:bg-gray-700">
                 Login
               </button>
             </Link>
             <Link href="/register">
-              <button className="ml-2 rounded-md border border-white px-4 py-2 text-white hover:bg-gray-700">
+              <button className="ml-2 rounded-md border border-white px-2 md:px-4 py-2 text-white hover:bg-gray-700">
                 Register
               </button>
             </Link>
           </>
         )}
       </div>
-
-      <div className="md:hidden">
-        <button onClick={toggleMobileMenu} aria-label="Toggle menu">
-          {isMobileMenuOpen ? <FiX size={30} /> : <FiMenu size={30} />}
-        </button>
-      </div>
+      {session ? (
+        <div className="md:hidden">
+          <button onClick={toggleMobileMenu} aria-label="Toggle menu">
+            {isMobileMenuOpen ? <FiX size={30} /> : <FiMenu size={30} />}
+          </button>
+        </div>
+      ) : (
+        ""
+      )}
 
       <div
         className={`absolute left-0 top-16 w-full bg-white py-8 text-eventureMainBg shadow-lg transition-all duration-500 ease-in-out md:hidden ${
           isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
-        {session ? (
-          <>
-            {session?.user.roles.includes("USER") && (
-              <Link href="/registerOrganizer">
-                <button className="mx-8 text-center text-blue-500 hover:bg-gray-100 mb-2">
-                  Register as Organizer
+        <>
+          <div className="flex flex-col gap-5">
+            {navbarData.map((submenu, index) => (
+              <Link href={submenu.link} key={index}>
+                <button className="px-8 text-left text-lg text-gray-600">
+                  {submenu.title}
                 </button>
               </Link>
-            )}
-            {isMobileMenuOpen && (
-              <div className="flex flex-col gap-5">
-                {navbarData.map((submenu, index) => (
-                  <Link href={submenu.link} key={index}>
-                    <button className="px-8 text-left text-lg">
-                      {submenu.title}
-                    </button>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </>
-        ) : (
-          <>
-            <Link href="/login">
-              <button className="mx-8 text-left text-lg">Login</button>
-            </Link>
-            <Link href="/register">
-              <button className="mx-8 text-left text-lg">Register</button>
-            </Link>
-          </>
-        )}
+            ))}
+            <div
+              onClick={handleLogout}
+              className="px-8 text-left text-lg text-gray-600"
+            >
+              Logout
+            </div>
+          </div>
+        </>
       </div>
     </header>
   );
