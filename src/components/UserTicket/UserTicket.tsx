@@ -1,8 +1,9 @@
 import { useEventTicket } from "@/context/EventTicketContext";
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaTicketAlt } from "react-icons/fa";
+import { date } from "yup";
 
 export interface UserTicket {
   userTicketId: number;
@@ -27,17 +28,26 @@ const UserTicket: React.FC<UserTicketProps> = ({ ticket }) => {
   const { userId } = useUser();
   const router = useRouter();
   const { setEventTicketId } = useEventTicket();
+  const [enableFeedbackReview, setEnableFeedbackReview] =
+    useState<boolean>(false);
 
   useEffect(() => {
+    if (new Date(ticket.eventStartedAt) < new Date()) {
+      setEnableFeedbackReview(true);
+    }
     setEventTicketId(ticket.eventTicketId);
-  }, [ticket.eventTicketId]);
+  }, [ticket]);
 
   const handleFeedbackClick = () => {
-    router.push(`/user/${userId}/feedback`);
+    if (enableFeedbackReview) {
+      router.push(`/user/${userId}/feedback`);
+    }
   };
 
   const handleReviewClick = () => {
-    router.push(`/user/${userId}/review`);
+    if (enableFeedbackReview) {
+      router.push(`/user/${userId}/review`);
+    }
   };
 
   return (
@@ -90,13 +100,15 @@ const UserTicket: React.FC<UserTicketProps> = ({ ticket }) => {
       <div className="mt-4 lg:mt-0 lg:ml-auto flex gap-4">
         <button
           onClick={handleFeedbackClick}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          className="bg-blue-500 px-4 py-2  text-white rounded-lg disabled:opacity-50"
+          disabled={!enableFeedbackReview}
         >
           Write Feedback
         </button>
         <button
           onClick={handleReviewClick}
-          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+          className="bg-green-500 px-4 py-2  text-white rounded-lg disabled:opacity-50"
+          disabled={!enableFeedbackReview}
         >
           Write Review
         </button>
