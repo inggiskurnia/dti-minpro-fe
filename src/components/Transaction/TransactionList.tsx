@@ -3,12 +3,12 @@
 import { TransactionResponse } from "@/types/transaction";
 import TransactionCard from "@/components/Transaction/TransactionCard";
 import getUserTransactions from "@/api/getTransactionss";
-import { useUser } from "@/context/UserContext";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const TransactionList: React.FC = () => {
-  const { userId } = useParams();
+  const { data: session } = useSession();
+  const userId = Number(session?.user.id);
 
   const {
     data: transactionResponse,

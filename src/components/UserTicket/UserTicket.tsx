@@ -25,7 +25,6 @@ interface UserTicketProps {
 }
 
 const UserTicket: React.FC<UserTicketProps> = ({ ticket }) => {
-  const { userId } = useUser();
   const router = useRouter();
   const { setEventTicketId } = useEventTicket();
   const [enableFeedbackReview, setEnableFeedbackReview] =
@@ -40,13 +39,13 @@ const UserTicket: React.FC<UserTicketProps> = ({ ticket }) => {
 
   const handleFeedbackClick = () => {
     if (enableFeedbackReview) {
-      router.push(`/user/${userId}/feedback`);
+      router.push(`/event/feedback`);
     }
   };
 
   const handleReviewClick = () => {
     if (enableFeedbackReview) {
-      router.push(`/user/${userId}/review`);
+      router.push(`/event/review`);
     }
   };
 

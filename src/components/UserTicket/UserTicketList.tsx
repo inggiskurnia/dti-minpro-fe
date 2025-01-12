@@ -4,10 +4,11 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getUserTicket } from "@/api/getUserTicket";
 import UserTicket from "@/components/UserTicket/UserTicket";
-import { useUser } from "@/context/UserContext";
+import { useSession } from "next-auth/react";
 
 const UserTicketList: React.FC = () => {
-  const { userId } = useUser();
+  const { data: session } = useSession();
+  const userId = Number(session?.user.id);
 
   const {
     data: tickets,

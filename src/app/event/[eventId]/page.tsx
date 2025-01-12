@@ -21,15 +21,13 @@ import {
 } from "react-icons/fa";
 import formatDateRange from "@/utils/common/formatDateRange";
 import { useEvent } from "@/context/EventContext";
-import { useUser } from "@/context/UserContext";
-import { useSession } from "next-auth/react";
 
 const EventPage: React.FC = () => {
   const { eventId } = useParams();
+
   const { setEventId } = useEvent();
   const [activeTab, setActiveTab] = useState("desc");
   const [isClient, setIsClient] = useState(false);
-  const { userId } = useUser();
 
   useEffect(() => {
     setIsClient(true);

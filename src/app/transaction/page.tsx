@@ -19,7 +19,6 @@ const Transaction: React.FC = () => {
   const { ticketId, ticketName, quantity, originalPrice } = useTransaction();
   const { selectedUserVoucher } = useUserVoucher();
   const [voucherDeduction, setVoucherDeduction] = useState<number>(0);
-  const [voucherDetail, setVoucherDetail] = useState<Voucher | null>(null);
   const [userPoints, setUserPoints] = useState<number>(0);
   const [pointsInput, setPointsInput] = useState<number>(0);
   const [pointsInputFormatted, setPointsInputFormatted] = useState<string>("");
@@ -99,7 +98,7 @@ const Transaction: React.FC = () => {
       if (response.success) {
         const confirmed = window.confirm("Transaction successful !");
         if (confirmed) {
-          router.push(`/user/${userId}/transactions`);
+          router.push(`/user/transactions`);
           return;
         }
       }

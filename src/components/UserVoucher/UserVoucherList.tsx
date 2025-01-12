@@ -4,10 +4,11 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getUserVouchers } from "@/api/getUserVoucher";
 import UserVoucher from "@/components/UserVoucher/UserVoucher";
-import { useUser } from "@/context/UserContext";
+import { useSession } from "next-auth/react";
 
 const UserVoucherList: React.FC = () => {
-  const { userId } = useUser();
+  const { data: session } = useSession();
+  const userId = Number(session?.user.id);
 
   const {
     data: vouchers,

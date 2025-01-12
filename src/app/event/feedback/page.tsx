@@ -4,12 +4,13 @@ import { postFeedback } from "@/api/postFeedback";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { useEventTicket } from "@/context/EventTicketContext";
-import { useUser } from "@/context/UserContext";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const EventFeedback = () => {
-  const { userId } = useUser();
+  const { data: session } = useSession();
+  const userId = Number(session?.user.id);
   const [feedback, setFeedback] = useState("");
   const { eventTicketId } = useEventTicket();
   const router = useRouter();
@@ -27,7 +28,7 @@ const EventFeedback = () => {
     if (status === 200) {
       const confirmed = window.confirm("Write feedback successful!");
       if (confirmed) {
-        router.push(`/user/${userId}/tickets`);
+        router.push(`/user/tickets`);
       }
     } else {
       window.confirm("Write feedback failed!");

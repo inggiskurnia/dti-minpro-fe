@@ -4,13 +4,16 @@ import { FaGift } from "react-icons/fa";
 import { getUserVoucherByVoucherId } from "@/api/getUserVoucher";
 import { claimVoucher } from "@/api/claimVoucher";
 import { useUser } from "@/context/UserContext";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 interface VoucherItemProps {
   voucher: Voucher;
 }
 
 const VoucherItem: React.FC<VoucherItemProps> = ({ voucher }) => {
-  const { userId } = useUser();
+  const { data: session } = useSession();
+  const userId = Number(session?.user.id);
   const [claimed, setClaimed] = useState(false);
 
   useEffect(() => {
@@ -34,6 +37,9 @@ const VoucherItem: React.FC<VoucherItemProps> = ({ voucher }) => {
   }, [claimed]);
 
   const handleClaim = async () => {
+    if (session == null) {
+      redirect("/login");
+    }
     if (claimed) return;
     console.log(userId);
 

@@ -3,12 +3,14 @@ import { Ticket } from "@/types/ticket";
 import { FaTicketAlt } from "react-icons/fa";
 import { redirect } from "next/navigation";
 import { useTransaction } from "@/context/TransactionContext";
+import { useSession } from "next-auth/react";
 
 interface TicketItemProps {
   ticket: Ticket;
 }
 
 const TicketItem: React.FC<TicketItemProps> = ({ ticket }) => {
+  const { data: session } = useSession();
   const [quantity, setQuantity] = useState(0);
   const {
     setTicketId,
@@ -19,12 +21,20 @@ const TicketItem: React.FC<TicketItemProps> = ({ ticket }) => {
   } = useTransaction();
 
   const increaseQuantity = () => {
+    if (session == null) {
+      redirect("/login");
+    }
+
     if (quantity < ticket.totalAvailable) {
       setQuantity(quantity + 1);
     }
   };
 
   const decreaseQuantity = () => {
+    if (session == null) {
+      redirect("/login");
+    }
+
     if (quantity > 0) {
       setQuantity(quantity - 1);
     }
@@ -37,7 +47,7 @@ const TicketItem: React.FC<TicketItemProps> = ({ ticket }) => {
     setTicketName(ticket.ticketName);
     setTicketDescription(ticket.description);
 
-    redirect("/checkout");
+    redirect("/transaction");
   };
 
   return (

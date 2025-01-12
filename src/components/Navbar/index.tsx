@@ -15,16 +15,15 @@ interface MenuData {
 }
 
 const Navbar: FC = () => {
-  const { data: session } = useSession(); // Session for login status
-  const { userId } = useUser();
+  const { data: session } = useSession();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [isSubmenuOpen, setSubmenuOpen] = useState<boolean>(false);
   const [eventId, setEventId] = useState<number | undefined>(undefined);
 
   const navbarData: MenuData[] = [
-    { title: "Tickets", link: `/user/${userId}/tickets` },
-    { title: "Transactions", link: `/user/${userId}/transactions` },
-    { title: "Voucher", link: `/user/${userId}/vouchers` },
+    { title: "Tickets", link: `/user/tickets` },
+    { title: "Transactions", link: `/user/transactions` },
+    { title: "Voucher", link: `/user/vouchers` },
     { title: "Create New Event", link: `/event/create` },
   ];
 
