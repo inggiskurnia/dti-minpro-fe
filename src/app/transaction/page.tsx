@@ -12,63 +12,61 @@ import { Voucher } from "@/types/voucher";
 import { getTotalUserPoints } from "@/api/getUserPoints";
 import { createTransaction } from "@/api/createTransaction";
 import { useRouter } from "next/navigation";
+import priceFormatter from "@/utils/common/priceFormatter";
 
 const Transaction: React.FC = () => {
   const { userId } = useUser();
   const { ticketId, ticketName, quantity, originalPrice } = useTransaction();
   const { selectedUserVoucher } = useUserVoucher();
-  const [voucherDeduction, setVoucherDeduction] = useState(0);
-  const [voucherDetail, setVoucherDetail] = useState<Voucher | null>(null);
-  const [userPoints, setUserPoints] = useState(0);
-  const [pointsInput, setPointsInput] = useState(0);
-  const [pointsDeduction, setPointsDeduction] = useState(0);
-  const [pointsError, setPointsError] = useState("");
+  const [voucherDeduction, setVoucherDeduction] = useState<number>(0);
+  const [userPoints, setUserPoints] = useState<number>(0);
+  const [pointsInput, setPointsInput] = useState<number>(0);
+  const [pointsInputFormatted, setPointsInputFormatted] = useState<string>("");
+  const [pointsDeduction, setPointsDeduction] = useState<number>(0);
+  const [pointsError, setPointsError] = useState<string>("");
 
   const router = useRouter();
 
-  const getVoucherDetail = async (voucherId: number) => {
-    try {
-      const voucher = await getVouchersById(voucherId);
-      return voucher;
-    } catch (error) {
-      console.error("Error fetching voucher details:", error);
-      return null;
-    }
-  };
-
   useEffect(() => {
     const fetchVoucherDetail = async () => {
-      if (selectedUserVoucher) {
-        const voucher = await getVoucherDetail(selectedUserVoucher.voucherId);
-        setVoucherDetail(voucher);
+      try {
+        if (selectedUserVoucher) {
+          const voucher = await getVouchersById(selectedUserVoucher.voucherId);
+          setVoucherDeduction(originalPrice * (voucher.amount / 100));
+        }
+      } catch (error) {
+        console.error("Error fetching voucher detail:", error);
       }
     };
 
+    const fetchTotalPoints = async () => {
+      try {
+        if (userId) {
+          const totalPoints = await getTotalUserPoints(userId);
+          setUserPoints(totalPoints);
+        }
+      } catch (error) {
+        console.error("Error fetching total points:", error);
+      }
+    };
+
+    fetchTotalPoints();
     fetchVoucherDetail();
-  }, [selectedUserVoucher]);
-
-  const fetchTotalPoints = async () => {
-    if (userId) {
-      const totalPoints = await getTotalUserPoints(userId);
-      setUserPoints(totalPoints);
-    }
-  };
-
-  useEffect(() => {
-    if (voucherDetail) {
-      const deduction = voucherDetail.amount;
-      setVoucherDeduction(deduction);
-    }
-  }, [voucherDetail, originalPrice]);
+  }, [selectedUserVoucher, userId]);
 
   const handlePointsCheck = () => {
-    fetchTotalPoints();
     if (pointsInput > userPoints) {
       setPointsError("Insufficient points.");
     } else {
       setPointsError("");
       setPointsDeduction(pointsInput);
     }
+  };
+
+  const handleInputPointsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, "");
+    setPointsInput(Number(value));
+    setPointsInputFormatted(priceFormatter(Number(value)));
   };
 
   const handlePurchase = async () => {
@@ -99,8 +97,8 @@ const Transaction: React.FC = () => {
 
       if (response.success) {
         const confirmed = window.confirm("Transaction successful !");
-        if (!confirmed) {
-          router.push(`/user/${userId}/transactions`);
+        if (confirmed) {
+          router.push(`/user/transactions`);
           return;
         }
       }
@@ -123,14 +121,15 @@ const Transaction: React.FC = () => {
           <p className="text-gray-600 mb-4">Event Ticket: {ticketName}</p>
           <p className="text-gray-600 mb-4">Total Tickets: {quantity}</p>
           <p className="text-gray-600 mb-4">
-            Original Amount: RP.{originalPrice.toFixed(2)}
+            Original Amount: Rp.
+            {priceFormatter(originalPrice)}
           </p>
           <UserVoucherSelection />
           <p className="text-gray-600 mb-4">
-            Voucher Deduction: RP.{voucherDeduction.toFixed(2)}
+            Voucher Deduction: Rp.{priceFormatter(voucherDeduction)}
           </p>
           <p className="text-gray-600 text-sm font-bold">
-            Current Points: {userPoints}
+            Current Points: {priceFormatter(userPoints)}
           </p>
 
           <div className="mb-4 flex flex-col sm:flex-row gap-4">
@@ -139,9 +138,9 @@ const Transaction: React.FC = () => {
                 Enter Points:
               </label>
               <input
-                type="number"
-                value={isNaN(pointsInput) ? "" : pointsInput}
-                onChange={(e) => setPointsInput(parseInt(e.target.value))}
+                type="text"
+                value={pointsInputFormatted}
+                onChange={handleInputPointsChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
@@ -156,11 +155,12 @@ const Transaction: React.FC = () => {
             <p className="text-red-500 text-xs italic">{pointsError}</p>
           )}
           <p className="text-gray-600 mb-4">
-            Points Deduction: RP.{pointsDeduction.toFixed(2)}
+            Points Deduction: Rp.
+            {priceFormatter(pointsDeduction)}
           </p>
           <p className="text-gray-600 mb-4">
-            Total Amount: RP.
-            {originalPrice - voucherDeduction - pointsDeduction}
+            Total Amount: Rp.
+            {priceFormatter(originalPrice - voucherDeduction - pointsDeduction)}
           </p>
           <div className="flex justify-center mt-10">
             <button

@@ -1,8 +1,9 @@
 import { useEventTicket } from "@/context/EventTicketContext";
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaTicketAlt } from "react-icons/fa";
+import { date } from "yup";
 
 export interface UserTicket {
   userTicketId: number;
@@ -24,35 +25,42 @@ interface UserTicketProps {
 }
 
 const UserTicket: React.FC<UserTicketProps> = ({ ticket }) => {
-  const { userId } = useUser();
   const router = useRouter();
   const { setEventTicketId } = useEventTicket();
+  const [enableFeedbackReview, setEnableFeedbackReview] =
+    useState<boolean>(false);
 
   useEffect(() => {
+    if (new Date(ticket.eventStartedAt) < new Date()) {
+      setEnableFeedbackReview(true);
+    }
     setEventTicketId(ticket.eventTicketId);
-  }, [ticket.eventTicketId]);
+  }, [ticket]);
 
   const handleFeedbackClick = () => {
-    router.push(`/user/${userId}/feedback`);
+    if (enableFeedbackReview) {
+      router.push(`/event/feedback`);
+    }
   };
 
   const handleReviewClick = () => {
-    router.push(`/user/${userId}/review`);
+    if (enableFeedbackReview) {
+      router.push(`/event/review`);
+    }
   };
 
   return (
     <div
       key={ticket.userTicketId}
-      className="bg-white shadow-xl rounded-lg p-6 mb-4 lg:mb-0 flex flex-col lg:flex-row lg:items-center"
+      className="bg-white shadow-xl rounded-lg p-8 space-y-4 mb-4 lg:mb-0 flex-col "
     >
       <h2 className="text-xl font-bold text-gray-700 mb-2 flex items-center">
         <FaTicketAlt className="text-blue-500 mr-2" />
         {ticket.eventTicketName}
       </h2>
       <p className="text-gray-700 mb-2">{ticket.eventTicketDescription}</p>
-      <div className="text-gray-600 mb-4 lg:mb-0 lg:ml-6 space-y-2 lg:space-y-0 lg:space-x-2 lg:flex lg:flex-wrap">
+      <div className="text-gray-600 mb-4 lg:mb-0 lg:ml-6 space-y-3 lg:space-y-0 lg:space-x-3 lg:flex lg:flex-wrap">
         <p className="flex items-center lg:w-1/2">
-          <FaCalendarAlt className="mr-2 text-green-500" />
           Event: <span className="ml-1 font-semibold">{ticket.eventName}</span>
         </p>
         <p className="flex items-center lg:w-1/2">
@@ -69,7 +77,7 @@ const UserTicket: React.FC<UserTicketProps> = ({ ticket }) => {
             {new Date(ticket.eventEndedAt).toLocaleString()}
           </span>
         </p>
-        <p className="flex items-center lg:w-1/2">
+        <p className="flex items-center">
           <FaMapMarkerAlt className="mr-2 text-red-500" />
           Location:{" "}
           <span className="ml-1 font-semibold">
@@ -91,13 +99,15 @@ const UserTicket: React.FC<UserTicketProps> = ({ ticket }) => {
       <div className="mt-4 lg:mt-0 lg:ml-auto flex gap-4">
         <button
           onClick={handleFeedbackClick}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          className="bg-blue-500 px-4 py-2  text-white rounded-lg disabled:opacity-50"
+          disabled={!enableFeedbackReview}
         >
           Write Feedback
         </button>
         <button
           onClick={handleReviewClick}
-          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+          className="bg-green-500 px-4 py-2  text-white rounded-lg disabled:opacity-50"
+          disabled={!enableFeedbackReview}
         >
           Write Review
         </button>

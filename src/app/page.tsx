@@ -1,8 +1,20 @@
+"use client";
+
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import EventList from "@/components/Event/EventList";
+import { useSession } from "next-auth/react";
+import { useUser } from "@/context/UserContext";
+import { useEffect } from "react";
 
 export default function Home() {
+  const { data: session } = useSession();
+  const { setUserId } = useUser();
+
+  useEffect(() => {
+    setUserId(Number(session?.user.id));
+  }, []);
+
   return (
     <>
       <Navbar></Navbar>

@@ -43,3 +43,18 @@ export const checkVoucherClaim = async ({
     return false;
   }
 };
+
+interface GetUserVoucherByVoucherIdParams {
+  userId: number;
+  voucherId: number;
+}
+
+export const getUserVoucherByVoucherId = async ({
+  userId,
+  voucherId,
+}: GetUserVoucherByVoucherIdParams): Promise<GetUserVouchersResponse> => {
+  const response = await axios.get<GetUserVouchersResponse>(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/${userId}/voucher/${voucherId}`
+  );
+  return response.data;
+};

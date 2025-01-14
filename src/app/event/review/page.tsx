@@ -4,7 +4,7 @@ import { postReview } from "@/api/postReview";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { useEventTicket } from "@/context/EventTicketContext";
-import { useUser } from "@/context/UserContext";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
@@ -13,7 +13,8 @@ const EventReview = () => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const { eventTicketId } = useEventTicket();
-  const { userId } = useUser();
+  const { data: session } = useSession();
+  const userId = Number(session?.user.id);
   const router = useRouter();
 
   const handleStarClick = (star: number) => {
@@ -30,7 +31,7 @@ const EventReview = () => {
     if (status === 200) {
       const confirmed = window.confirm("Review submitted successfully!");
       if (confirmed) {
-        router.push(`/user/${userId}/tickets`);
+        router.push(`/user/tickets`);
       }
     } else {
       window.confirm("Review submission failed!");

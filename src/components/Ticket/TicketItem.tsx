@@ -3,12 +3,14 @@ import { Ticket } from "@/types/ticket";
 import { FaTicketAlt } from "react-icons/fa";
 import { redirect } from "next/navigation";
 import { useTransaction } from "@/context/TransactionContext";
+import { useSession } from "next-auth/react";
 
 interface TicketItemProps {
   ticket: Ticket;
 }
 
 const TicketItem: React.FC<TicketItemProps> = ({ ticket }) => {
+  const { data: session } = useSession();
   const [quantity, setQuantity] = useState(0);
   const {
     setTicketId,
@@ -19,12 +21,20 @@ const TicketItem: React.FC<TicketItemProps> = ({ ticket }) => {
   } = useTransaction();
 
   const increaseQuantity = () => {
+    if (session == null) {
+      redirect("/login");
+    }
+
     if (quantity < ticket.totalAvailable) {
       setQuantity(quantity + 1);
     }
   };
 
   const decreaseQuantity = () => {
+    if (session == null) {
+      redirect("/login");
+    }
+
     if (quantity > 0) {
       setQuantity(quantity - 1);
     }
@@ -37,16 +47,25 @@ const TicketItem: React.FC<TicketItemProps> = ({ ticket }) => {
     setTicketName(ticket.ticketName);
     setTicketDescription(ticket.description);
 
-    redirect("/checkout");
+    redirect("/transaction");
   };
 
   return (
-    <div className="bg-white shadow-xl rounded-lg p-4 mb-4 flex flex-col lg:flex-row items-center">
-      <FaTicketAlt className="text-blue-600 mb-4 lg:mr-4 lg:mb-0" size={40} />
-      <div className="flex-grow text-center lg:text-left">
+    <div className="bg-white shadow-xl rounded-lg p-4 mb-4 flex-col justify-center lg:grid lg:grid-cols-6 lg:flex-row items-center">
+      <div className="flex justify-center">
+        <FaTicketAlt
+          className="text-blue-600 mb-4 lg:mr-4 lg:mb-0 lg:col-span-1"
+          size={40}
+        />
+      </div>
+
+      <div className="flex-col text-center max-w-50 lg:text-left col-span-3">
         <h2 className="text-xl font-bold text-gray-800">{ticket.ticketName}</h2>
         <p className="text-gray-600">{ticket.description}</p>
-        <p className="text-gray-600">Price: RP.{ticket.price.toFixed(2)}</p>
+        <p className="text-gray-600">
+          Price: Rp.{new Intl.NumberFormat("id-ID").format(ticket.price)}
+        </p>
+
         <p className="text-gray-600">Available: {ticket.totalAvailable}</p>
       </div>
       <div className="flex flex-col lg:flex-row items-center mt-4 lg:mt-0">

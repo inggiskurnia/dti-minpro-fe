@@ -26,7 +26,7 @@ const EventList: React.FC = () => {
   const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
   const [cityId, setCityId] = useState<number | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
-  const limit = 12;
+  const limit = 8;
 
   useEffect(() => {
     const loadEvents = async () => {
