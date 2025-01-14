@@ -55,7 +55,7 @@ const RegisterPage: React.FC = () => {
       }
       setIsSubmitting(false);
     },
-    onError: (error: any) => {
+    onError: (error) => {
       setSubmitError(error.message || "An error occurred during registration.");
       setIsSubmitting(false);
     },
