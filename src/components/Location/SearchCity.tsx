@@ -4,7 +4,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { getCities } from "@/api/getFilters";
 import { useDebounce } from "@/hooks/useDebounce";
 
-const SearchCity: React.FC = () => {
+interface SearchCityProps {
+  cityId: number | undefined;
+  setCityId: (cityId: number | undefined) => void;
+}
+
+const SearchCity: React.FC<SearchCityProps> = ({ cityId, setCityId }) => {
   const [cities, setCities] = useState<{ cityId: number; cityName: string }[]>(
     []
   );
@@ -28,7 +33,17 @@ const SearchCity: React.FC = () => {
     }
   }, [debouncedCityQuery]);
 
+  useEffect(() => {
+    if (cityId) {
+      const selectedCity = cities.find((city) => city.cityId === cityId);
+      if (selectedCity) {
+        setCityQuery(selectedCity.cityName);
+      }
+    }
+  }, [cityId, cities]);
+
   const handleCityClick = (id: number, name: string) => {
+    setCityId(id);
     setCityQuery(name);
     setDropdownVisible(false);
   };
@@ -38,6 +53,7 @@ const SearchCity: React.FC = () => {
   };
 
   const clearSelection = () => {
+    setCityId(undefined);
     setCityQuery("");
   };
 
@@ -59,7 +75,7 @@ const SearchCity: React.FC = () => {
               <div
                 key={city.cityId}
                 onClick={() => handleCityClick(city.cityId, city.cityName)}
-                className="cursor-pointer py-1 px-2 text-gray-700 hover:bg-gray-100 "
+                className="cursor-pointer py-1 px-2 text-gray-700 hover:bg-gray-100"
               >
                 {city.cityName}
               </div>

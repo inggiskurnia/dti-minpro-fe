@@ -61,7 +61,7 @@ const CreateEvent = () => {
   const handleSubmit = async (values: typeof initialValues) => {
     try {
       const eventData = {
-        organizerId: 14, // change this on deployment
+        organizerId: 14,
         name: values.name,
         description: values.description,
         thumbnail: values.thumbnail,
@@ -163,7 +163,7 @@ const CreateEvent = () => {
                 </div>
 
                 <div className="mb-4">
-                  <SearchCity />
+                  <SearchCity cityId={cityId} setCityId={setCityId} />
                 </div>
 
                 <div className="mb-4">

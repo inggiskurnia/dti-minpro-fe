@@ -69,7 +69,7 @@ const EventList: React.FC = () => {
           categoryId={categoryId}
           setCategoryId={setCategoryId}
         />
-        <SearchCity />
+        <SearchCity cityId={cityId} setCityId={setCityId} />
       </div>
 
       {loading ? (

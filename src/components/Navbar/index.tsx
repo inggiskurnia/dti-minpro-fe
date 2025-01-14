@@ -17,7 +17,6 @@ const Navbar: FC = () => {
   const { data: session } = useSession();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [isSubmenuOpen, setSubmenuOpen] = useState<boolean>(false);
-  const [eventId, setEventId] = useState<number | undefined>(undefined);
 
   const navbarData: MenuData[] = [
     { title: "Tickets", link: `/user/tickets` },
