@@ -10,7 +10,6 @@ import EventCategorySelect from "@/components/Event/EventCategorySelect";
 import SearchCity from "@/components/Location/SearchCity";
 
 const CreateEvent = () => {
-  const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
   const [cityId, setCityId] = useState<number | undefined>(undefined);
 
@@ -83,7 +82,6 @@ const CreateEvent = () => {
 
       if (response.status === 200) {
         window.confirm("Create new event successful !");
-        setSubmissionSuccess(true);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -165,7 +163,7 @@ const CreateEvent = () => {
                 </div>
 
                 <div className="mb-4">
-                  <SearchCity cityId={cityId} setCityId={setCityId} />
+                  <SearchCity />
                 </div>
 
                 <div className="mb-4">

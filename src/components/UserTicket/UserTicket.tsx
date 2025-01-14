@@ -1,9 +1,7 @@
 import { useEventTicket } from "@/context/EventTicketContext";
-import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaTicketAlt } from "react-icons/fa";
-import { date } from "yup";
 
 export interface UserTicket {
   userTicketId: number;

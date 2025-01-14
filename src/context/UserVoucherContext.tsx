@@ -1,6 +1,6 @@
 "use client";
 
-import { UserVoucher, Voucher } from "@/types/voucher";
+import { UserVoucher } from "@/types/voucher";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface UserVoucherContextType {

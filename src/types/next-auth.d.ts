@@ -1,7 +1,6 @@
 import "next-auth";
 import { DefaultSession } from "next-auth";
 import { TokenClaims } from "./auth/TokenPair";
-import { JWT } from "next-auth/jwt"
 
 declare module "next-auth" {
   interface Session {
@@ -19,11 +18,11 @@ declare module "next-auth" {
     accessToken: {
       claims: TokenClaims;
       value: string;
-    }
+    };
     refreshToken: {
       claims: TokenClaims;
       value: string;
-    }
+    };
   }
 
   interface User {
@@ -39,11 +38,11 @@ declare module "next-auth/jwt" {
     accessToken: {
       claims: TokenClaims;
       value: string;
-    }
+    };
     refreshToken: {
       claims: TokenClaims;
       value: string;
-    }
+    };
     error?: string;
   }
 }

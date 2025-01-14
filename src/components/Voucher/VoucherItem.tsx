@@ -3,7 +3,6 @@ import { Voucher } from "@/types/voucher";
 import { FaGift } from "react-icons/fa";
 import { getUserVoucherByVoucherId } from "@/api/getUserVoucher";
 import { claimVoucher } from "@/api/claimVoucher";
-import { useUser } from "@/context/UserContext";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 

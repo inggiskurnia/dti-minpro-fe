@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export interface UserTicket {
   userTicketId: number;
@@ -29,14 +29,15 @@ export const getUserTicket = async (userId: number): Promise<UserTicket[]> => {
     );
 
     return response.data.data;
-  } catch (error: any) {
+  } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(
         error.response?.data?.message || "Failed to fetch tickets"
       );
     } else {
       throw new Error(
-        error.message || "An unexpected error occurred while fetching tickets"
+        (error as Error).message ||
+          "An unexpected error occurred while fetching tickets"
       );
     }
   }

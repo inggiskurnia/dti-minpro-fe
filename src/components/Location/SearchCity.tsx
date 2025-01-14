@@ -4,12 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { getCities } from "@/api/getFilters";
 import { useDebounce } from "@/hooks/useDebounce";
 
-interface SearchCityProps {
-  cityId: number | undefined;
-  setCityId: (cityId: number | undefined) => void;
-}
-
-const SearchCity: React.FC<SearchCityProps> = ({ cityId, setCityId }) => {
+const SearchCity: React.FC = () => {
   const [cities, setCities] = useState<{ cityId: number; cityName: string }[]>(
     []
   );
@@ -34,7 +29,6 @@ const SearchCity: React.FC<SearchCityProps> = ({ cityId, setCityId }) => {
   }, [debouncedCityQuery]);
 
   const handleCityClick = (id: number, name: string) => {
-    setCityId(id);
     setCityQuery(name);
     setDropdownVisible(false);
   };
@@ -44,7 +38,6 @@ const SearchCity: React.FC<SearchCityProps> = ({ cityId, setCityId }) => {
   };
 
   const clearSelection = () => {
-    setCityId(undefined);
     setCityQuery("");
   };
 

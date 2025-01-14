@@ -8,7 +8,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useUser } from "@/context/UserContext";
 import { getVouchersById } from "@/api/getVouchers";
-import { Voucher } from "@/types/voucher";
 import { getTotalUserPoints } from "@/api/getUserPoints";
 import { createTransaction } from "@/api/createTransaction";
 import { useRouter } from "next/navigation";
@@ -103,7 +102,8 @@ const Transaction: React.FC = () => {
         }
       }
     } catch (error) {
-      window.Error("Error completing transaction");
+      console.log(error);
+      window.Error("Error completing transaction ");
     }
   };
 

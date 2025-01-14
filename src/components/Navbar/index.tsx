@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FC } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import Link from "next/link";
-import { FaSearch, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { useSession, signOut } from "next-auth/react";
 import SearchEvent from "../Event/SearchEvent";
-import { useUser } from "@/context/UserContext";
 
 interface MenuData {
   title: string;
@@ -45,7 +44,7 @@ const Navbar: FC = () => {
         <Link href="/">
           <div className="text-3xl">Eventure</div>
         </Link>
-        <SearchEvent eventId={eventId} setEventId={setEventId} />
+        <SearchEvent />
       </div>
 
       <div className="pl-2">
@@ -61,13 +60,6 @@ const Navbar: FC = () => {
             {isSubmenuOpen && (
               <div className="absolute top-12 z-10 flex py-4 w-full items-center rounded bg-white shadow-lg">
                 <div className="w-full rounded-lg">
-                  {/* {session?.user.roles.includes("USER") && (
-                    <Link href="/registerOrganizer">
-                      <div className="mx-4 my-2 cursor-pointer rounded-lg px-8 py-2 text-gray-600 hover:bg-gray-200">
-                        Register as Organizer
-                      </div>
-                    </Link>
-                  )} */}
                   {navbarData.map((submenu, index) => (
                     <Link href={submenu.link} key={index}>
                       <div className="mx-4 my-2 cursor-pointer rounded-lg px-8 py-2 text-gray-600 hover:bg-gray-200">
