@@ -20,6 +20,7 @@ export default function Home() {
       <Navbar></Navbar>
       <div className="flex min-h-screen flex-col">
         <div className="flex-grow pt-16">
+          <div>{process.env.NEXT_PUBLIC_BACKEND_URL}</div>
           <EventList />
         </div>
         <Footer></Footer>
