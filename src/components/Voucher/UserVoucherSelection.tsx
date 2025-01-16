@@ -4,7 +4,7 @@ import React from "react";
 import { getUserVouchers } from "@/api/getUserVoucher";
 import { useUserVoucher } from "@/context/UserVoucherContext";
 import { useUser } from "@/context/UserContext";
-import { UserVoucher, Voucher } from "@/types/voucher";
+import { UserVoucher } from "@/types/voucher";
 import { useQuery } from "@tanstack/react-query";
 
 const UserVoucherSelection: React.FC = () => {

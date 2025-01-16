@@ -6,17 +6,12 @@ import { getEventsByName } from "@/api/getEvents";
 import { useDebounce } from "@/hooks/useDebounce";
 import { FaSearch } from "react-icons/fa";
 
-interface SearchEventProps {
-  eventId: number | undefined;
-  setEventId: (eventId: number | undefined) => void;
-}
-
 interface Event {
   eventId: number;
   eventName: string;
 }
 
-const SearchEvent: React.FC<SearchEventProps> = ({ eventId, setEventId }) => {
+const SearchEvent: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [eventQuery, setEventQuery] = useState<string>("");
   const debouncedEventQuery = useDebounce(eventQuery, 500);
@@ -51,7 +46,6 @@ const SearchEvent: React.FC<SearchEventProps> = ({ eventId, setEventId }) => {
   };
 
   const handleEventClick = (id: number) => {
-    setEventId(id);
     setDropdownVisible(false);
     router.push(`/event/${id}`);
   };

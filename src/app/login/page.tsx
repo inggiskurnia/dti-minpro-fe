@@ -17,7 +17,7 @@ type FormData = z.infer<typeof schema>;
 
 const LoginPage: FC = () => {
   const router = useRouter();
-  const { data: session, status } = useSession(); // Get session data and status
+  const { data: session, status } = useSession();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -41,15 +41,19 @@ const LoginPage: FC = () => {
         email: data.email,
         password: data.password,
       });
-      
+
       console.log(result);
-      
+
       if (!result?.ok) {
-        router.push(`/login?error=${encodeURIComponent(result?.error || "unknown")}`);
-        setError(result?.error || "An unexpected error occurred. Please try again.");
+        router.push(
+          `/login?error=${encodeURIComponent(result?.error || "unknown")}`
+        );
+        setError(
+          result?.error || "An unexpected error occurred. Please try again."
+        );
       } else {
         // Trigger a re-fetch of the session after login
-        router.replace("/");  // This will reload the page to check the session again
+        router.replace("/"); // This will reload the page to check the session again
         alert("Login success!");
       }
     } catch (error) {
@@ -78,16 +82,24 @@ const LoginPage: FC = () => {
             Never miss out on your favorite events
           </h2>
           <p className="text-sm text-gray-600 text-center mt-2">
-            Join us and experience the ease of managing and attending events with Loket.
+            Join us and experience the ease of managing and attending events
+            with Loket.
           </p>
         </div>
 
         {/* Right Section - Login Form */}
         <div className="p-8 flex flex-col justify-center items-center">
-          <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">Login</h1>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full max-w-sm">
+          <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">
+            Login
+          </h1>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-4 w-full max-w-sm"
+          >
             <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="font-medium text-gray-700">Email</label>
+              <label htmlFor="email" className="font-medium text-gray-700">
+                Email
+              </label>
               <input
                 id="email"
                 type="email"
@@ -95,13 +107,17 @@ const LoginPage: FC = () => {
                 className="border border-gray-300 p-2 rounded text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your email"
               />
-              {errors.email && <span className="text-red-500">{errors.email.message}</span>}
+              {errors.email && (
+                <span className="text-red-500">{errors.email.message}</span>
+              )}
             </div>
             <div className="flex flex-col gap-2 relative">
-              <label htmlFor="password" className="font-medium text-gray-700">Password</label>
+              <label htmlFor="password" className="font-medium text-gray-700">
+                Password
+              </label>
               <input
                 id="password"
-                type={showPassword ? "text" : "password"} 
+                type={showPassword ? "text" : "password"}
                 {...register("password")}
                 className="border border-gray-300 p-2 rounded text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" // Adjusted placeholder color for visibility
                 placeholder="Enter your password"
@@ -113,7 +129,9 @@ const LoginPage: FC = () => {
               >
                 {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
               </button>
-              {errors.password && <span className="text-red-500">{errors.password.message}</span>}
+              {errors.password && (
+                <span className="text-red-500">{errors.password.message}</span>
+              )}
             </div>
             <button
               disabled={isLoading}
@@ -125,7 +143,10 @@ const LoginPage: FC = () => {
             {error && <span className="text-red-500">{error}</span>}
           </form>
           <p className="text-center text-gray-600 text-sm mt-4">
-            Don't have an account? <a href="/register" className="text-blue-600 hover:underline">Register</a>
+            Don&apos;t have an account?{" "}
+            <a href="/register" className="text-blue-600 hover:underline">
+              Register
+            </a>
           </p>
         </div>
       </div>

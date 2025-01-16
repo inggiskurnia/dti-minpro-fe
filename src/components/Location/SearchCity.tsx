@@ -33,6 +33,15 @@ const SearchCity: React.FC<SearchCityProps> = ({ cityId, setCityId }) => {
     }
   }, [debouncedCityQuery]);
 
+  useEffect(() => {
+    if (cityId) {
+      const selectedCity = cities.find((city) => city.cityId === cityId);
+      if (selectedCity) {
+        setCityQuery(selectedCity.cityName);
+      }
+    }
+  }, [cityId, cities]);
+
   const handleCityClick = (id: number, name: string) => {
     setCityId(id);
     setCityQuery(name);
@@ -66,7 +75,7 @@ const SearchCity: React.FC<SearchCityProps> = ({ cityId, setCityId }) => {
               <div
                 key={city.cityId}
                 onClick={() => handleCityClick(city.cityId, city.cityName)}
-                className="cursor-pointer py-1 px-2 text-gray-700 hover:bg-gray-100 "
+                className="cursor-pointer py-1 px-2 text-gray-700 hover:bg-gray-100"
               >
                 {city.cityName}
               </div>

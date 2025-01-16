@@ -10,7 +10,7 @@ export const postFeedback = async ({
   userId,
   eventTicketId,
   feedback,
-}: FeedbackParams): Promise<any> => {
+}: FeedbackParams): Promise<number | boolean> => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/event/ticket/${eventTicketId}/feedback/user/${userId}`,

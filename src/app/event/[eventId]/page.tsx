@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getEventById, GetEventResponseDTO } from "@/api/getEvents";
 import getTickets from "@/api/getTickets";
-import { getAllVouchers, getVouchersByEventId } from "@/api/getVouchers";
+import { getAllVouchers } from "@/api/getVouchers";
 import { TicketResponse } from "@/types/ticket";
 import { VoucherResponse } from "@/types/voucher";
 import Navbar from "@/components/Navbar";
@@ -24,7 +24,6 @@ import { useEvent } from "@/context/EventContext";
 
 const EventPage: React.FC = () => {
   const { eventId } = useParams();
-
   const { setEventId } = useEvent();
   const [activeTab, setActiveTab] = useState("desc");
   const [isClient, setIsClient] = useState(false);
@@ -63,8 +62,9 @@ const EventPage: React.FC = () => {
     queryFn: getAllVouchers,
   });
 
-  if (isLoading || ticketsLoading) return <div>Loading...</div>;
-  if (error || ticketsError)
+  if (isLoading || ticketsLoading || vouchersLoading)
+    return <div>Loading...</div>;
+  if (error || ticketsError || vouchersError)
     return <div>{error?.message || ticketsError?.message}</div>;
   if (!event || !ticketsResponse?.success)
     return <div>No event, tickets, or vouchers found</div>;

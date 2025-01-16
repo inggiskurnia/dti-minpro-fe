@@ -107,7 +107,7 @@ const EventList: React.FC = () => {
           {!firstPage && (
             <button
               className="rounded bg-gray-200 px-4 py-2 font-bold text-gray-700 hover:bg-gray-300"
-              onClick={() => currentPage > 0 && setCurrentPage(currentPage - 1)}
+              onClick={handlePreviousPage}
               disabled={currentPage === 0}
             >
               Previous
@@ -121,9 +121,7 @@ const EventList: React.FC = () => {
           {!lastPage && (
             <button
               className="rounded bg-gray-200 px-4 py-2 font-bold text-gray-700 hover:bg-gray-300"
-              onClick={() =>
-                currentPage < totalPages - 1 && setCurrentPage(currentPage + 1)
-              }
+              onClick={handleNextPage}
               disabled={currentPage >= totalPages - 1}
             >
               Next

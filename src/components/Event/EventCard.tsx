@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FC } from "react";
-import { FaRegCalendarAlt, FaUserCircle } from "react-icons/fa";
+import { FaRegCalendarAlt } from "react-icons/fa";
 
 interface EventCardProps {
   eventId: number;
@@ -16,7 +16,6 @@ const EventCard: FC<EventCardProps> = ({
   eventId,
   thumbnail,
   eventName,
-  price,
   date,
   organizer,
   organizerPicture,

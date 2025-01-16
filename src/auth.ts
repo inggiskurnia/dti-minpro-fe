@@ -1,9 +1,23 @@
-import NextAuth, { User } from "next-auth";
+import NextAuth, { User, Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { JWT } from "next-auth/jwt";
 import { API_URL } from "./constants/url";
 import { LoginResponse, TokenClaims } from "./types/auth/TokenPair";
 import { jwtDecode } from "jwt-decode";
 import jwt from "jsonwebtoken";
+
+interface Token {
+  accessToken: {
+    claims: TokenClaims;
+    value: string;
+  };
+  refreshToken: {
+    claims: TokenClaims;
+    value: string;
+  };
+  roles: string[];
+  userId: number;
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
@@ -32,32 +46,32 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           },
           body: JSON.stringify({ email, password }),
         });
-      
+
         if (!response.ok) {
           return null;
         }
-      
+
         const { data } = (await response.json()) as LoginResponse;
-      
+
         // Verify the JWT signature
         const secret = process.env.JWT_SECRET;
         if (!secret) {
           console.error("JWT secret not set");
           return null;
         }
-      
+
         try {
           jwt.verify(data.accessToken, secret);
         } catch (err) {
           console.error("JWT verification failed:", err);
           return null;
         }
-      
+
         const decodedToken = jwtDecode<TokenClaims>(data.accessToken);
-      
+
         // Extract claims from the decoded token
         const { sub, scope, userId } = decodedToken;
-      
+
         const parsedResponse: User = {
           email: sub,
           token: {
@@ -73,26 +87,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           roles: scope.split(" "),
           userId: parseInt(userId),
         };
-      
+
         return parsedResponse ?? null;
-      }
+      },
     }),
   ],
   callbacks: {
-    async session({ session, token }) {
-      session.accessToken = token.accessToken.value;
-      session.refreshToken = token.refreshToken.value;
+    async session({ session, token }: { session: Session; token: JWT }) {
+      const customToken = token as unknown as Token;
+      session.accessToken = customToken.accessToken.value;
+      session.refreshToken = customToken.refreshToken.value;
       session.user = {
         ...session.user,
-        roles: token.roles,
-        id: token.accessToken.claims.userId,
+        roles: customToken.roles,
+        id: customToken.accessToken.claims.userId,
       };
       return session;
     },
-    async jwt({ token, user }) {
-      console.log("IN JWT CALLBACK: ", user);
+    async jwt({ token, user }: { token: JWT; user?: User }) {
       if (user) {
-        token = {
+        const customToken: Token = {
           accessToken: {
             claims: user.token.accessToken.claims,
             value: user.token.accessToken.value,
@@ -104,22 +118,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           roles: user.roles,
           userId: user.userId,
         };
+        token = customToken as unknown as JWT;
       }
+
+      const customToken = token as unknown as Token;
 
       // Handle access token expiration
       if (
-        token.accessToken.claims.exp &&
-        Date.now() >= token.accessToken.claims.exp * 1000
+        customToken.accessToken.claims.exp &&
+        Date.now() >= customToken.accessToken.claims.exp * 1000
       ) {
-        const newToken = await refreshToken(token.refreshToken.value);
+        const newToken = await refreshToken(customToken.refreshToken.value);
         if (!newToken) {
           return null;
         }
-        token.accessToken = newToken;
+        customToken.accessToken = newToken;
       }
-      return token;
+      return customToken as unknown as JWT;
     },
-    async signIn({ user }) {
+    async signIn({ user }: { user: User }) {
       console.log("IN SIGNIN CALLBACK: ", user);
       return true;
     },

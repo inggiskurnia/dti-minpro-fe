@@ -12,7 +12,7 @@ export const postReview = async ({
   eventTicketId,
   rating,
   description,
-}: ReviewParams): Promise<any> => {
+}: ReviewParams): Promise<number | boolean> => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/event/ticket/${eventTicketId}/review/user/${userId}`,

@@ -6,12 +6,14 @@ import EventList from "@/components/Event/EventList";
 import { useSession } from "next-auth/react";
 import { useUser } from "@/context/UserContext";
 import { useEffect } from "react";
+import axios from "axios";
 
 export default function Home() {
   const { data: session } = useSession();
   const { setUserId } = useUser();
 
   useEffect(() => {
+    console.log(axios.defaults.baseURL);
     setUserId(Number(session?.user.id));
   }, []);
 
