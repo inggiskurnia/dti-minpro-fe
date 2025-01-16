@@ -33,7 +33,7 @@ export const getEvents = async (
   cityId?: number
 ): Promise<PaginationInfo<EventSearch>> => {
   const response = await axios.get<ApiResponse<PaginationInfo<EventSearch>>>(
-    `https://dti-minpro-be-production.up.railway.app/event`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/event`,
     {
       params: {
         limit,
@@ -59,7 +59,6 @@ export const getEventsByName = async (query: string): Promise<Event[]> => {
     return response.data.data;
   } catch (error) {
     console.error("Error fetching events by name:", error);
-    console.log();
     return [];
   }
 };
