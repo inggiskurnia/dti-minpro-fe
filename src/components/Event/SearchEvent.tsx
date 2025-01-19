@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { getEventsByName } from "@/api/getEvents";
 import { useDebounce } from "@/hooks/useDebounce";
 import { FaSearch } from "react-icons/fa";
+import Link from "next/link";
 
 interface Event {
   eventId: number;
@@ -40,9 +41,8 @@ const SearchEvent: React.FC = () => {
   };
 
   const handleBlur = () => {
-    setTimeout(() => {
-      setDropdownVisible(false);
-    }, 200);
+    setShowInput(false);
+    setDropdownVisible(false);
   };
 
   const handleEventClick = (id: number) => {
@@ -56,23 +56,14 @@ const SearchEvent: React.FC = () => {
   };
 
   return (
-    <div
-      className={`relative ${showInput ? "w-full" : "w-auto md:w-auto"} transition-all duration-500`}
-    >
-      <div className="hidden md:block w-full">
-        <input
-          type="text"
-          ref={inputRef}
-          placeholder="Search Event"
-          value={eventQuery}
-          onChange={(e) => setEventQuery(e.target.value)}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          className="w-full md:w-96 rounded bg-eventureMainBg2 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-500"
-        />
-      </div>
-      <div className="flex justify-end md:hidden">
-        {showInput ? (
+    <div className="flex gap-5 items-center">
+      <Link href="/">
+        <div className={showInput ? "hidden" : "text-3xl"}>Eventure</div>
+      </Link>
+      <div
+        className={`relative ${showInput ? "w-full" : "w-auto md:w-auto"} transition-all duration-500`}
+      >
+        <div className="hidden md:block w-full">
           <input
             type="text"
             ref={inputRef}
@@ -81,33 +72,49 @@ const SearchEvent: React.FC = () => {
             onChange={(e) => setEventQuery(e.target.value)}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            className="w-full rounded bg-eventureMainBg2 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-500"
+            className="w-full md:w-96 rounded bg-eventureMainBg2 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-500"
           />
-        ) : (
-          <FaSearch
-            className="cursor-pointer"
-            onClick={handleSearchIconClick}
-            size={20}
-          />
-        )}
-      </div>
-      {dropdownVisible && eventQuery && (
-        <div className="absolute left-0 top-full z-20 mt-1 max-h-40 w-full md:w-96 overflow-y-auto border border-gray-300 bg-white">
-          {events.length > 0 ? (
-            events.map((event) => (
-              <div
-                key={event.eventId}
-                onMouseDown={() => handleEventClick(event.eventId)}
-                className="block p-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-              >
-                {event.eventName}
-              </div>
-            ))
+        </div>
+        <div className="flex justify-end md:hidden">
+          {showInput ? (
+            <input
+              type="text"
+              ref={inputRef}
+              placeholder="Search Event"
+              value={eventQuery}
+              onChange={(e) => setEventQuery(e.target.value)}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              className="w-full rounded bg-eventureMainBg2 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-500"
+            />
           ) : (
-            <div className="p-2 text-center text-gray-700">No events found</div>
+            <FaSearch
+              className="cursor-pointer"
+              onClick={handleSearchIconClick}
+              size={20}
+            />
           )}
         </div>
-      )}
+        {dropdownVisible && eventQuery && (
+          <div className="absolute left-0 top-full z-20 mt-1 max-h-40 w-full md:w-96 overflow-y-auto border border-gray-300 bg-white">
+            {events.length > 0 ? (
+              events.map((event) => (
+                <div
+                  key={event.eventId}
+                  onMouseDown={() => handleEventClick(event.eventId)}
+                  className="block p-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                >
+                  {event.eventName}
+                </div>
+              ))
+            ) : (
+              <div className="p-2 text-center text-gray-700">
+                No events found
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
