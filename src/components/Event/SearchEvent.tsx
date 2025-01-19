@@ -97,7 +97,7 @@ const SearchEvent: React.FC = () => {
         </div>
         {dropdownVisible && eventQuery && (
           <div className="absolute left-0 top-full z-20 mt-1 max-h-40 w-full md:w-96 overflow-y-auto border border-gray-300 bg-white">
-            {events.length > 0 ? (
+            {events?.length > 0 ? (
               events.map((event) => (
                 <div
                   key={event.eventId}
